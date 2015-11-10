@@ -1,0 +1,190 @@
+<dom-module id="add-driver">
+    <template>
+        <style>
+        :host {
+            @apply(--layout-vertical);
+            @apply(--layout-center-center);
+            top: 400px;
+            bottom: 50px;
+
+              --paper-input-container-color:var(--dark-primary-color);
+            --paper-input-container-focus-color: var(--default-primary-color);
+        }
+
+        [main] {
+            @apply(--layout-vertical);
+            @apply(--shadow-elevation-3dp);
+            background: var(--paper-grey-100);
+            height: auto;
+            width: calc(70% - 25px);
+            padding-bottom: 15px;
+        }
+
+        .avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            background-color: #ccc;
+            text-align: center;
+        }
+         paper-toolbar {
+            background: var(--dark-primary-color);
+            height: 50px;
+        }
+
+        [dash] {
+            @apply(--layout-horizontal);
+            @apply(--layout-flex-2);
+            @apply(--layout-center-center);
+            height: 180px;
+        }
+
+        [vcard] {
+            height: auto;
+            @apply(--layout-horizontal);
+            @apply(--layout-wrap);
+            /*
+            width: 35%;*/
+            border: 1px solid orange;
+            /* background-color: var(--default-primary-color);*/
+        }
+
+        [info] {
+            @apply(--layout-horizontal);
+            @apply(--layout-flex-3);
+            @apply(--layout-center-center);
+            border: 1px solid green;
+            height: 180px;
+            color: white;
+        }
+
+        .camera {
+            margin-top: 25px;
+        }
+
+        .save {
+            position: relative;
+            bottom: 20px;
+            left: 90%;
+        }
+        /*  paper-input[type="text"]*/
+
+        #header {
+            margin-left: 25px;
+        }
+        </style>
+        <div main class="vertical layout">
+         <paper-toolbar>
+                <paper-icon-button icon="arrow-back" on-click="back"></paper-icon-button>
+                <span class="flex"></span>
+                <paper-icon-button icon="more-vert"></paper-icon-button>
+            </paper-toolbar>
+            <div vcard>
+                <div dash>
+                    <div class="layout horizontal center">
+                        <div class="avatar">
+                            <paper-icon-button icon="mdi:camera" class="camera"></paper-icon-button>
+                        </div>
+                    </div>
+                </div>
+                <div info>
+                		 <div class="layout vertical center">
+
+                            <paper-icon-item>
+                                <iron-icon icon="communication:phone"></iron-icon> Email <paper-input label="sd"></paper-input>
+                            </paper-icon-item>
+                            <paper-icon-item>
+                                <iron-icon icon="communication:email"> </iron-icon> Email
+                            </paper-icon-item>
+                        </div>
+                </div>
+            </div>
+            <paper-fab icon="mdi:content-save" class="save" elevation="3" mini></paper-fab>
+            <div class="vertical center ">
+                <div class="layout horizontal center">
+                    <h2 id="header">Personal informations</h2>
+                    <div class="flex"></div>
+                    <paper-item>
+                        <paper-toggle-button>Inactive</paper-toggle-button>
+                    </paper-item>
+                </div>
+                <div class="horizontal layout center">
+                    <div class="layout vertical flex center">
+                        <paper-input label="First Name" type="text"></paper-input>
+
+                            <paper-input label="City" type="text"></paper-input>
+
+
+                            <paper-input label="Street" type="text"></paper-input>
+
+                            <paper-input label="Zip Code" type="text"></paper-input>
+
+                            <paper-input label="Province" type="text"></paper-input>
+
+                            <paper-input label="Country" type="text"></paper-input>
+
+                    </div>
+                    <div class="layout vertical flex center">
+                    <paper-input label="Last Name" type="text"></paper-input>
+
+                            <paper-input label="SIN" type="text"></paper-input>
+
+                            <paper-input label="Date of Birth" type="text"></paper-input>
+
+                            <paper-input label="Date of employment" type="text"></paper-input>
+
+                            <paper-input label="Termination date" type="text"></paper-input>
+
+                            <paper-input label=" Inactive date" type="text"></paper-input>
+
+                    </div>
+                    <div class="layout vertical flex center">
+
+                            <paper-dropdown-menu label='Terminal#'>
+                                <paper-menu class="dropdown-content">
+                                    <paper-item>Terminal#1</paper-item>
+                                </paper-menu>
+                            </paper-dropdown-menu>
+
+
+                            <paper-input label="Unit#" type="number"></paper-input>
+
+
+                            <paper-dropdown-menu label='Single'>
+                                <paper-menu class="dropdown-content">
+                                    <paper-item>Single</paper-item>
+                                </paper-menu>
+                            </paper-dropdown-menu>
+
+
+
+                     <paper-button class="btn" on-tap="showDialog" raised>Change Date</paper-button>
+                        <paper-dialog id="dialog" class="paper-date-picker-dialog" modal on-iron-overlay-closed="dismissDialog">
+                            <paper-date-picker id="picker" responsive-width="655px"></paper-date-picker>
+                            <div class="buttons">
+                                <paper-button dialog-dismiss>Cancel</paper-button>
+                                <paper-button dialog-confirm>OK</paper-button>
+                            </div>
+                        </paper-dialog>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+    <script>
+    Polymer({
+        is: 'add-driver',
+        listeners:{
+        	ontap:'showDialog'
+        },
+        showDialog: function(){
+        	this.$.dialog.toggle();
+        },
+        ready:function(){
+        	this.$.date= new Date();
+        }
+
+    });
+    </script>
+</dom-module>
