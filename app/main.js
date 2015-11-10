@@ -9,8 +9,8 @@ var mainWindow;
 
 // Preserver of the window size and position between app launches.
 var mainWindowState = windowStateKeeper('main', {
-    width: 1000,
-    height: 600
+  width: 1000,
+  height: 600
 });
 
 // You have data from config/env_XXX.json file loaded here in case you need it.
@@ -18,24 +18,24 @@ var mainWindowState = windowStateKeeper('main', {
 
 app.on('ready', function() {
 
-    mainWindow = new BrowserWindow({
-        x: mainWindowState.x,
-        y: mainWindowState.y,
-        width: mainWindowState.width,
-        height: mainWindowState.height
-    });
+  mainWindow = new BrowserWindow({
+    x: mainWindowState.x,
+    y: mainWindowState.y,
+    width: mainWindowState.width,
+    height: mainWindowState.height
+  });
 
-    if (mainWindowState.isMaximized) {
-        mainWindow.maximize();
-    }
+  if (mainWindowState.isMaximized) {
+    mainWindow.maximize();
+  }
 
-    mainWindow.loadUrl('file://' + __dirname + '/app.html');
+  mainWindow.loadUrl('file://' + __dirname + '/index.html');
 
-    mainWindow.on('close', function() {
-        mainWindowState.saveState(mainWindow);
-    });
+  mainWindow.on('close', function() {
+    mainWindowState.saveState(mainWindow);
+  });
 });
 
 app.on('window-all-closed', function() {
-    app.quit();
+  app.quit();
 });

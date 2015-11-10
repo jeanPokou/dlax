@@ -1,4 +1,4 @@
-Just another app using electron and Polymer
+App using electron and Polymer
 ==============
 
 1. Using the Slush boilerplate

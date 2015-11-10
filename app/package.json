@@ -11,8 +11,5 @@
   },
   "dependencies": {
     "fs-jetpack": "^0.6.4"
-  },
-  "devDependencies": {
-    "browser-sync": "^2.10.0"
   }
 }

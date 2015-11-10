@@ -5,7 +5,6 @@ var less = require('gulp-less');
 var esperanto = require('esperanto');
 var map = require('vinyl-map');
 var jetpack = require('fs-jetpack');
-
 var utils = require('./utils');
 
 var projectDir = jetpack;
