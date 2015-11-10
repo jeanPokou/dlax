@@ -13,7 +13,7 @@ if (process.platform === 'win32') {
 }
 
 /**
- * [runBuild - building the app using gulp task build
+ * runBuild - building the app using gulp task build
  *
  * @return {promise} [ build process promise ]
  */
@@ -37,6 +37,10 @@ var runBuild = function() {
   return deferred.promise;
 };
 
+/**
+ * runGulpWatch - running the gulp watch task defined in the build.js
+ *
+ */
 var runGulpWatch = function() {
   var watch = childProcess.spawn(gulpPath, [
       'watch',
@@ -54,6 +58,11 @@ var runGulpWatch = function() {
   });
 };
 
+
+/**
+ * runApp - launching the builded app (./build) using electron in global space
+ *
+ */
 var runApp = function() {
   var app = childProcess.spawn(electron, ['./build']);
 
@@ -66,6 +75,10 @@ var runApp = function() {
   });
 };
 
+/**
+ * runBuild  - Executing runGulpWatch and runApp
+ *
+ */
 runBuild()
 .then(function() {
   runGulpWatch();
