@@ -58,7 +58,6 @@ var runGulpWatch = function() {
   });
 };
 
-
 /**
  * runApp - launching the builded app (./build) using electron in global space
  *
