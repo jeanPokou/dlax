@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "dbfkit": "^1.0.9",
+    "edge": "^4.0.0",
     "node-dbf": "^0.1.0"
   }
 }

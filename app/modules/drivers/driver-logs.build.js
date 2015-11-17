@@ -1,1 +1,0 @@
-Polymer({ is: 'driver-logs' });

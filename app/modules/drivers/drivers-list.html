@@ -82,7 +82,8 @@
             font-size: 1.3em;
             margin-right: 30px;
             /*  border-bottom: 2px solid #ccc;*/
-            /*class="layout horizontal" style="width:100%; left:20px;font-size:1.2em"*/
+            /*class="layout horizontal" style="width:100%;
+             left:20px;font-size:1.2em"*/
         }
 
         .numberOfRecords {
@@ -271,7 +272,7 @@
         },
 
         _isMobileChanged: function(isMobile) {
-            console.log('mobile changed' + isMobile);
+            // console.log('mobile changed' + isMobile);
 
             for (var i = 1; i < this.alphabet.length; i += 2) {
                 var id = '#_' + this.alphabet[i];
@@ -305,7 +306,7 @@
 
         _updateRoute: function(driversData) {
 
-            console.log(driversData);
+            // console.log(driversData);
         },
 
         _filterSearch: function() {
