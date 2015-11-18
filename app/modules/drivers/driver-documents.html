@@ -1,14 +1,76 @@
-<dom-module id="driver-document">
+<dom-module id="driver-documents">
     <template>
         <style>
         :host {
             display: flex;
+            position: relative;
+            height: calc(80% - 10px);
+            top: 10px;
+            margin-bottom: 5px;
+            @apply(--layout-center-center)
+        }
+        [main]{
+          @apply(--layout-vertical);
+          @apply(--shadow-elevation-3dp);
+          background: var(--paper-grey-100);
+          height: auto;
+          width: calc(80% - 16px);
+          padding-bottom: 15px;
+        }
+        paper-toolbar {
+           background: var(--dark-primary-color);
+
+       }
+
+        [list]{
+          width:100%;
+          @apply(--layout-vertical);
+          @apply(--layout-center-center);
+
+
+        }
+        paper-item{
+          height: 80px;
+          border: 1px solid #ccc;
+          margin-top:2px;
+        
+          @apply(--layout-center-center);
         }
         </style>
+
+
+        <div main>
+          <paper-toolbar class="medium">
+            <paper-icon-button icon="arrow-back"></paper-icon-button>
+            <div class="flex"></div>
+            <paper-icon-button icon="more-vert"></paper-icon-button>
+
+          </paper-toolbar>
+
+          <div list>
+
+        <paper-item>
+
+            doc 1
+
+          </paper-item>
+
+          <paper-item>
+
+              doc 2
+
+            </paper-item>
+
+
+
+          </div>
+
+        </div>
     </template>
     <script>
     Polymer({
-        is: 'driver-document'
+        is: 'driver-documents',
+
     });
     </script>
 </dom-module>

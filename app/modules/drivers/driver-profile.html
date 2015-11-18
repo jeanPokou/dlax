@@ -201,7 +201,7 @@
                 <paper-icon-button icon="arrow-back" on-click="back"></paper-icon-button>
                 <span class="flex"></span>
                 <paper-icon-button icon="mdi:chart-bar"></paper-icon-button>
-                <paper-icon-button icon="mdi:file-document"></paper-icon-button>
+                <paper-icon-button icon="mdi:file-document" on-click="viewDocuments"></paper-icon-button>
                 <paper-icon-button icon="more-vert"></paper-icon-button>
             </paper-toolbar>
 
@@ -435,6 +435,10 @@
                 this.parentNode.selected = 'driversList';
 
 
+            },
+            viewDocuments:function(){
+              this.parentNode.selected='driverDocuments';
+              console.log('hello');
             }
             /*,
                     bahaviors: [Polymer.NeonSharedElementAnimatableBehavior]*/
