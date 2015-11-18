@@ -22,7 +22,8 @@
 			}
 			  [cardHeader] {
             @apply(--layout-vertical);
-            @apply(--layout-flex);
+            /*@apply(--layout-flex);*/
+						width: 150px;
            @apply(--layout-center-center)
       			color: white;
            padding: 2px;
@@ -45,7 +46,7 @@
 
 		<div main>
 
-		<div cardHeader class="flex-1" >
+		<div cardHeader>
                         <iron-icon   icon="{{icon}}"></iron-icon>
 
                       <span>{{header}}</span>

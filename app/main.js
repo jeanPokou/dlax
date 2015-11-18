@@ -6,7 +6,7 @@ var env = require('./vendor/electron_boilerplate/env_config');
 var windowStateKeeper = require('./vendor/electron_boilerplate/window_state');
 var Parser = require('node-dbf');
 var jetpack = require('fs-jetpack');
-var edge = require('edge');
+
 
 var mainWindow;
 
@@ -18,8 +18,6 @@ var mainWindowState = windowStateKeeper('main', {
 
 // You have data from config/env_XXX.json file loaded here in case you need it.
 // console.log(env.name);
-// testing edge js
-//
 
 
 var parser = new Parser('T:\\TDSM_Wagropur\\dbf\\driver.dbf');
@@ -30,6 +28,7 @@ parser.on('end',function() {
   console.log('parsing done !');
   jetpack.append('driver.json',JSON.stringify(drivers));
 });
+
 
 var drivers = [];
 parser.on('record',function(record) {
@@ -55,6 +54,7 @@ app.on('ready', function() {
 
   mainWindow.loadUrl('file://' + __dirname + '/index.html');
   //parser.parse();
+
 
   mainWindow.on('close', function() {
     mainWindowState.saveState(mainWindow);

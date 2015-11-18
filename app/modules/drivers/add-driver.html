@@ -1,14 +1,18 @@
+
 <dom-module id="add-driver">
     <template>
         <style>
         :host {
             @apply(--layout-vertical);
             @apply(--layout-center-center);
-            top: 400px;
-            bottom: 50px;
-
-              --paper-input-container-color:var(--dark-primary-color);
+            position: relative;
+      height: calc(80% - 10px);
+      top: 10px;
+      margin-bottom: 10px;
+        
+              --paper-input-container-color:black;
             --paper-input-container-focus-color: var(--default-primary-color);
+                --paper-fab-background:var(--paper-blue-600);
         }
 
         [main] {
@@ -46,17 +50,22 @@
             @apply(--layout-wrap);
             /*
             width: 35%;*/
-            border: 1px solid orange;
-            /* background-color: var(--default-primary-color);*/
+            /*border: 1px solid orange;*/
+           background-color: var(--default-primary-color);
+      --paper-input-container-color:white;
         }
 
         [info] {
             @apply(--layout-horizontal);
             @apply(--layout-flex-3);
             @apply(--layout-center-center);
-            border: 1px solid green;
+            border-left: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
             height: 180px;
-            color: white;
+            color:black;
+             background-color: white;
+
+
         }
 
         .camera {
@@ -67,11 +76,18 @@
             position: relative;
             bottom: 20px;
             left: 90%;
+
         }
         /*  paper-input[type="text"]*/
 
         #header {
             margin-left: 25px;
+        }
+        .id{
+          font-size: 3em;
+        }
+        .id iron-icon,paper-input iron-icon{
+          margin-right: 5px;
         }
         </style>
         <div main class="vertical layout">
@@ -90,13 +106,13 @@
                 </div>
                 <div info>
                 		 <div class="layout vertical center">
-
-                            <paper-icon-item>
-                                <iron-icon icon="communication:phone"></iron-icon> Email <paper-input label="sd"></paper-input>
-                            </paper-icon-item>
-                            <paper-icon-item>
-                                <iron-icon icon="communication:email"> </iron-icon> Email
-                            </paper-icon-item>
+                    <paper-icon-item class="id"><iron-icon icon="mdi:account"></iron-icon>{{driverID}}</paper-icon-item>
+                        <paper-input label="Phone">
+                          <iron-icon icon="mdi:phone" prefix></iron-icon>
+                        </paper-input>
+                        <paper-input label="Email">
+                          <iron-icon icon="mdi:email" prefix></iron-icon>
+                        </paper-input>
                         </div>
                 </div>
             </div>
@@ -104,10 +120,12 @@
             <div class="vertical center ">
                 <div class="layout horizontal center">
                     <h2 id="header">Personal informations</h2>
-                    <div class="flex"></div>
+                    <div class="flex-3"></div>
                     <paper-item>
                         <paper-toggle-button>Inactive</paper-toggle-button>
                     </paper-item>
+
+
                 </div>
                 <div class="horizontal layout center">
                     <div class="layout vertical flex center">
@@ -123,12 +141,17 @@
                             <paper-input label="Province" type="text"></paper-input>
 
                             <paper-input label="Country" type="text"></paper-input>
+                            <paper-input label="Time Zone"></paper-input>
 
                     </div>
                     <div class="layout vertical flex center">
                     <paper-input label="Last Name" type="text"></paper-input>
 
-                            <paper-input label="SIN" type="text"></paper-input>
+                            <paper-input label="Driver id" type="text" value="{{driverID}}"></paper-input>
+
+
+                            <paper-input label="SIN"></paper-input>
+
 
                             <paper-input label="Date of Birth" type="text"></paper-input>
 
@@ -136,37 +159,26 @@
 
                             <paper-input label="Termination date" type="text"></paper-input>
 
-                            <paper-input label=" Inactive date" type="text"></paper-input>
+    <paper-input label="Group"></paper-input>
 
                     </div>
                     <div class="layout vertical flex center">
-
-                            <paper-dropdown-menu label='Terminal#'>
-                                <paper-menu class="dropdown-content">
-                                    <paper-item>Terminal#1</paper-item>
-                                </paper-menu>
-                            </paper-dropdown-menu>
-
-
-                            <paper-input label="Unit#" type="number"></paper-input>
-
-
-                            <paper-dropdown-menu label='Single'>
-                                <paper-menu class="dropdown-content">
-                                    <paper-item>Single</paper-item>
-                                </paper-menu>
-                            </paper-dropdown-menu>
+                          <paper-input style="margin-top:-5px;" label="As"></paper-input>
+                      <span style="margin-left:-120px;margin-top:5px;">Language</span>
+                      <div class="layout vertical" style="max-width:100px;margin-left:-110px;">
+                        <paper-radio-group selected="English">
+                      <paper-radio-button name="English">English</paper-radio-button>
+                      <paper-radio-button name="French">French</paper-radio-button>
+                      </paper-radio-group>
+                      </div>
+                                <paper-checkbox style="    margin-top: 25px;margin-left: -23px;"checked>Agricultural Certified</paper-checkbox>
+                      <paper-input label="Terminal" type="text"></paper-input>
+                      <paper-input label="Unit#" type="number"></paper-input>
+                      <paper-input label="Single" type="text"></paper-input>
 
 
 
-                     <paper-button class="btn" on-tap="showDialog" raised>Change Date</paper-button>
-                        <paper-dialog id="dialog" class="paper-date-picker-dialog" modal on-iron-overlay-closed="dismissDialog">
-                            <paper-date-picker id="picker" responsive-width="655px"></paper-date-picker>
-                            <div class="buttons">
-                                <paper-button dialog-dismiss>Cancel</paper-button>
-                                <paper-button dialog-confirm>OK</paper-button>
-                            </div>
-                        </paper-dialog>
+
                     </div>
                 </div>
             </div>
@@ -175,14 +187,26 @@
     <script>
     Polymer({
         is: 'add-driver',
+        properties:{
+          driverID:{
+            type:Number,
+            value:123,
+            notify:true
+          }
+        },
         listeners:{
-        	ontap:'showDialog'
+        	ontap:'back'
+
         },
         showDialog: function(){
         	this.$.dialog.toggle();
         },
-        ready:function(){
+        ready: function(){
         	this.$.date= new Date();
+        }
+        ,
+        back:function(){
+          this.parentNode.selected = 'driversList';
         }
 
     });

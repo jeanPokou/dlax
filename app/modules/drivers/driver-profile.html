@@ -8,8 +8,10 @@
             --paper-badge-background: #D32F2F;
             --paper-badge-width: 42px;
             --paper-badge-height: 42px;
-            min-height: 600px;
-            top: 20%;
+            position: relative;
+      height: calc(80% - 10px);
+      top: 10px;
+      margin-bottom: 10px;
         }
         /*   --dark-primary-color: #0288D1;
       --default-primary-color: #03A9F4; */
@@ -180,6 +182,19 @@
             color: white;
             background-color: #03A9F4;
         }
+
+        [stat]{
+          @apply(--layout-horizontal);
+          border-bottom: 1px solid #ccc;
+          min-height: 80px;
+          padding: 5px 2px ;
+        }
+        [realTimeInfo]{
+          @apply(--layout-horizontal);
+          @apply(--layout-center-center);
+          @apply(--layout-fex);
+          border-left:1px solid #ccc;
+        }
         </style>
         <div main layout vertical id="tt">
             <paper-toolbar>
@@ -189,9 +204,11 @@
                 <paper-icon-button icon="mdi:file-document"></paper-icon-button>
                 <paper-icon-button icon="more-vert"></paper-icon-button>
             </paper-toolbar>
+
+
             <div vcard>
                 <div dash>
-                    <div class="layout vertical flex-3 center">
+                    <div class="layout vertical flex center">
                         <div class="layout horizontal center">
                             <img src="{{driverData.avatar}}" alt="" class="avatar ">
                             <paper-badge label="-183"></paper-badge>
@@ -239,6 +256,45 @@
                     </div>
                 </div>
             </div>
+
+            <div stat>
+
+              <div class="layout vertical flex center">
+                <div class="layout horizontal flex center">
+                     <h3>Life to date</h3>
+                </div>
+              <div class="layout horizontal center flex">
+
+                  <paper-item>
+                      <paper-item-body two-line>
+                          <div class="header">Reset Date</div>
+                          <div secondary>12/05/2015</div>
+                      </paper-item-body>
+                  </paper-item>
+                  <paper-item>
+                      <paper-item-body two-line>
+                          <div class="header">Miles Since Reset</div>
+                          <div secondary>53451</div>
+                      </paper-item-body>
+                  </paper-item>
+                  <paper-item>
+                    <paper-item-body two line>
+                      <div class="header">LTD Miles</div>
+                      <div secondary>3121</div>
+                    </paper-item-body>
+                  </paper-item>
+              </div>
+
+              </div>
+
+                      <div class="flex" realTimeInfo>
+                        <h3> Real Time Log Information </h3>
+
+                      </div>
+
+
+            </div>
+
             <div class="layout vertical">
                 <div class="layout horizontal center">
                     <h2>Personal informations</h2>
@@ -277,36 +333,61 @@
                                 <div secondary>{{driverData.address.zipcode}}</div>
                             </paper-item-body>
                         </paper-item>
+                        <paper-item>
+                            <paper-item-body two-line>
+                                <div class="header">Province</div>
+                                <div secondary>NB</div>
+                            </paper-item-body>
+                        </paper-item>
+                        <paper-item>
+                            <paper-item-body two-line>
+                                <div class="header">Country</div>
+                                <div secondary>Canada</div>
+                            </paper-item-body>
+                        </paper-item>
+
                     </div>
                     <div class="layout vertical flex">
+                      <paper-item>
+                          <paper-item-body two-line>
+                              <div class="header">Time Zone</div>
+                              <div secondary>Eastern Time</div>
+                          </paper-item-body>
+                      </paper-item>
                         <paper-item>
                             <paper-item-body two-line class="layout vertical">
-                                <div class='header'>FirstName</div>
+                                <div class='header'>Last Name</div>
                                 <div secondary>{{driverData.name}}</div>
                             </paper-item-body>
                         </paper-item>
                         <paper-item>
                             <paper-item-body two-line>
-                                <div class="header">Date of Birth</div>
-                                <div secondary>{{driverData.dob}}</div>
+                                <div class="header">SIN</div>
+                                <div secondary>Canada</div>
                             </paper-item-body>
                         </paper-item>
                         <paper-item>
                             <paper-item-body two-line>
-                                <div class="header">City</div>
-                                <div secondary>{{driverData.address.city}}</div>
+                                <div class="header">Date of Employment</div>
+                                <div secondary>05/05/2012</div>
                             </paper-item-body>
                         </paper-item>
                         <paper-item>
                             <paper-item-body two-line>
-                                <div class="header">Street</div>
-                                <div secondary>{{driverData.address.street}}</div>
+                                <div class="header">Terminal</div>
+                                <div secondary>TDSM Wagropur</div>
                             </paper-item-body>
                         </paper-item>
                         <paper-item>
                             <paper-item-body two-line>
-                                <div class="header">Zip Code</div>
-                                <div secondary>{{driverData.address.zipcode}}</div>
+                                <div class="header">Unit</div>
+                                <div secondary>1735</div>
+                            </paper-item-body>
+                        </paper-item>
+                        <paper-item>
+                            <paper-item-body two-line>
+                                <div class="header">Language</div>
+                                <div secondary>English</div>
                             </paper-item-body>
                         </paper-item>
                     </div>
