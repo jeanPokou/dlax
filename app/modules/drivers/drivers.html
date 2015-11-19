@@ -79,7 +79,7 @@
             <drivers-list id="driversList" data-route='driversList'></drivers-list>
             <driver-profile id="driverProfile" data-route='driverProfile' driver-data="{{selectedDriver}}"></driver-profile>
             <add-driver data-route="addDriver"></add-driver>
-            <driver-documents data-route="driverDocuments"></driver-documents>
+            <driver-documents data-route="driverDocuments" data=[[selectedDriver]]></driver-documents>
         </neon-animated-pages>
         <paper-fab icon="mdi:account-plus" hidden$='{{_compute(selected)}}' class="fab-action" elevation="3" on-click="_addDriver"></paper-fab>
     </template>
@@ -94,7 +94,7 @@
             },
             selected: {
                 type: String,
-                value: 'driverDocuments',
+                value: 'driversList',
                 observer: '_onSelectedChange'
 
             },
