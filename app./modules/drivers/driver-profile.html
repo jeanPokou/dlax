@@ -1,0 +1,447 @@
+<dom-module id="driver-profile">
+    <template>
+        <style is="custon-style">
+        :host {
+            @apply(--layout-vertical);
+            box-sizing: border-box;
+            @apply(--layout-center-center);
+            --paper-badge-background: #D32F2F;
+            --paper-badge-width: 42px;
+            --paper-badge-height: 42px;
+            position: relative;
+      height: calc(80% - 10px);
+      top: 10px;
+      margin-bottom: 10px;
+        }
+        /*   --dark-primary-color: #0288D1;
+      --default-primary-color: #03A9F4; */
+
+        [main] {
+            @apply(--layout-vertical);
+            @apply(--shadow-elevation-3dp);
+            background: var(--paper-grey-100);
+            height: auto;
+            width: calc(80% - 16px);
+            padding-bottom: 15px;
+        }
+
+        paper-toolbar {
+            background: var(--dark-primary-color);
+        }
+
+        .avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .rating {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            background-color: #ccc;
+            font-size: 0.9em;
+            /*  margin-right: 30px;
+           margin-top: 2px;
+            float: right; */
+        }
+
+        .missingsLog {
+            border-radius: 50%;
+            height: 50px;
+            width: 50px;
+            background-color: var(--paper-grey-300);
+            /*   float: right;
+          margin-top: 110px;
+          margin-right: -50px; */
+            font-size: 0.9em;
+        }
+
+        [vcard] {
+            height: auto;
+            @apply(--layout-horizontal);
+            @apply(--layout-wrap);
+            /*
+            width: 35%;*/
+            /* border: 1px solid orange;*/
+            background-color: var(--default-primary-color);
+        }
+
+        [info] {
+            @apply(--layout-horizontal);
+            @apply(--layout-flex-3);
+            @apply(--layout-center-center);
+            /*   border: 1px solid green;*/
+            height: 180px;
+            color: white;
+        }
+
+        .fullName {
+            font-size: 1.5em;
+            margin: 5px;
+        }
+
+        .companyId {
+            font-size: 1.2em;
+            margin: 5px;
+        }
+
+        paper-icon-item {
+            margin: 5px;
+        }
+
+        iron-icon {
+            margin-right: 3px;
+        }
+
+        [dash] {
+            @apply(--layout-horizontal);
+            @apply(--layout-flex-2);
+            @apply(--layout-center-center);
+            height: 180px;
+            /* padding-top: 12px;
+            padding-left: 20px;
+            padding-right: 20px; */
+            /* border: 1px solid green;*/
+            /*
+*/
+        }
+
+        [details] {
+            @apply(--layout-horizontal);
+            @apply(--layout-center-center);
+        }
+
+        .name {
+            color: var(--text-primary-color);
+        }
+
+        @media(max-width: 601px) {
+            [main] {
+                width: calc(95.33% - 2px);
+            }
+            [vcard] {
+                height: auto;
+                @apply(--layout-vertical);
+                @apply(--layout-wrap);
+            }
+            [details] {
+                @apply(--layout-vertical);
+                @apply(--layout-center-center);
+            }
+        }
+
+        @media(min-width: 601px) {
+            [main] {
+                width: calc(90.33% - 16px);
+            }
+        }
+
+        paper-badge {
+            color: white;
+            margin-right: 120px;
+        }
+
+        .list {
+            padding-top: 12px;
+            background-color: white;
+            display: inline-block;
+            width: 100%;
+            height: 228px;
+            margin: 12px;
+            @apply(--shadow-elevation-2dp);
+        }
+
+        .short {
+            padding-top: 12px;
+            height: 216px;
+        }
+
+        .header {
+            color: black;
+            font-weight: bold;
+        }
+
+        paper-item {
+            border-top: 1px solid #ccc;
+        }
+
+        h2 {
+            margin-left: 24px;
+        }
+
+        [dashInfo] {
+            @apply(--layout-vertical);
+            @apply(--flex-2);
+            @apply(--layout-center-center);
+            height: 100%;
+            /*   border: 1px solid red;
+          @apply(--shadow-elevation-2dp); */
+            padding: 1px;
+            color: white;
+            background-color: #03A9F4;
+        }
+
+        [stat]{
+          @apply(--layout-horizontal);
+          border-bottom: 1px solid #ccc;
+          min-height: 80px;
+          padding: 5px 2px ;
+        }
+        [realTimeInfo]{
+          @apply(--layout-horizontal);
+          @apply(--layout-center-center);
+          @apply(--layout-fex);
+          border-left:1px solid #ccc;
+        }
+        </style>
+        <div main layout vertical id="tt">
+            <paper-toolbar>
+                <paper-icon-button icon="arrow-back" on-click="back"></paper-icon-button>
+                <span class="flex"></span>
+                <paper-icon-button icon="mdi:chart-bar"></paper-icon-button>
+                <paper-icon-button icon="mdi:file-document" on-click="viewDocuments"></paper-icon-button>
+                <paper-icon-button icon="more-vert"></paper-icon-button>
+            </paper-toolbar>
+
+
+            <div vcard>
+                <div dash>
+                    <div class="layout vertical flex center">
+                        <div class="layout horizontal center">
+                            <img src="{{driverData.avatar}}" alt="" class="avatar ">
+                            <paper-badge label="-183"></paper-badge>
+                        </div>
+                        <div class="layout horizontal center ">
+                            <!--   <div class="rating"></div>
+                      <span class="flex"></span> -->
+                            <!--   <div class="missingsLog">20.5</div> -->
+                            <iron-icon icon="mdi:star"></iron-icon>
+                                <iron-icon icon="mdi:star"></iron-icon>
+                                    <iron-icon icon="mdi:star"></iron-icon>
+                                        <iron-icon icon="mdi:star"></iron-icon>
+                                            <iron-icon icon="mdi:star"></iron-icon>
+                        </div>
+                    </div>
+                    <!-- class="vertical flex-2 center" style="border:1px solid white;height:100%" -->
+                    <!--  <div dashInfo>
+                        <div class="layout horizontal center flex"><span> LTD Miles :15/15/12</span></div>
+                        <div class="layout horizontal center flex"> <span> Reset Date :15/15/12</span></div>
+                        <div class="layout horizontal center flex"><span> SR Miles  :13213</span></div>
+                    </div> -->
+                </div>
+                <div info>
+                    <div class="layout center horizontal">
+                        <div class="layout vertical center">
+                            <span class="fullName">{{driverData.name}}</span>
+                            <span class="comanyID">32541</span>
+                            <paper-icon-item>
+                                <iron-icon icon="communication:phone"></iron-icon> <span>{{driverData.phone}}</span>
+                            </paper-icon-item>
+                            <paper-icon-item>
+                                <iron-icon icon="communication:email"> </iron-icon> <span>{{driverData.email}}</span>
+                            </paper-icon-item>
+                        </div>
+                        <div class="layout vertical center flex-1">
+                            <!-- <span>LTD Miles :152</span>
+                            <span> Reset Date :15/15/12</span>
+                            <span> Miles Since Reset :13213</span> -->
+                            <!--   <paper-icon-item>
+                             <iron-icon icon="mdi:calendar-check"></iron-icon>
+                         <paper-icon-item>
+                             <iron-icon icon="mdi:calendar-check"></iron-icon> <span> Reset Date :15/15/12</span>
+                         </paper-icon-item> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div stat>
+
+              <div class="layout vertical flex center">
+                <div class="layout horizontal flex center">
+                     <h3>Life to date</h3>
+                </div>
+              <div class="layout horizontal center flex">
+
+                  <paper-item>
+                      <paper-item-body two-line>
+                          <div class="header">Reset Date</div>
+                          <div secondary>12/05/2015</div>
+                      </paper-item-body>
+                  </paper-item>
+                  <paper-item>
+                      <paper-item-body two-line>
+                          <div class="header">Miles Since Reset</div>
+                          <div secondary>53451</div>
+                      </paper-item-body>
+                  </paper-item>
+                  <paper-item>
+                    <paper-item-body two line>
+                      <div class="header">LTD Miles</div>
+                      <div secondary>3121</div>
+                    </paper-item-body>
+                  </paper-item>
+              </div>
+
+              </div>
+
+                      <div class="flex" realTimeInfo>
+                        <h3> Real Time Log Information </h3>
+
+                      </div>
+
+
+            </div>
+
+            <div class="layout vertical">
+                <div class="layout horizontal center">
+                    <h2>Personal informations</h2>
+                    <span class="flex"></span>
+                    <paper-icon-button icon="editor:mode-edit"></paper-icon-button>
+                </div>
+                <div details>
+                    <div class="layout vertical flex">
+                        <paper-item>
+                            <paper-item-body two-line class="layout vertical">
+                                <div class='header'>FirstName</div>
+                                <div secondary>{{driverData.name}}</div>
+                            </paper-item-body>
+                        </paper-item>
+                        <paper-item>
+                            <paper-item-body two-line>
+                                <div class="header">Date Of Birth</div>
+                                <div secondary>{{driverData.dob}}</div>
+                            </paper-item-body>
+                        </paper-item>
+                        <paper-item>
+                            <paper-item-body two-line>
+                                <div class="header">City</div>
+                                <div secondary>{{driverData.address.city}}</div>
+                            </paper-item-body>
+                        </paper-item>
+                        <paper-item>
+                            <paper-item-body two-line>
+                                <div class="header">Street</div>
+                                <div secondary>{{driverData.address.street}}</div>
+                            </paper-item-body>
+                        </paper-item>
+                        <paper-item>
+                            <paper-item-body two-line>
+                                <div class="header">Zip Code</div>
+                                <div secondary>{{driverData.address.zipcode}}</div>
+                            </paper-item-body>
+                        </paper-item>
+                        <paper-item>
+                            <paper-item-body two-line>
+                                <div class="header">Province</div>
+                                <div secondary>NB</div>
+                            </paper-item-body>
+                        </paper-item>
+                        <paper-item>
+                            <paper-item-body two-line>
+                                <div class="header">Country</div>
+                                <div secondary>Canada</div>
+                            </paper-item-body>
+                        </paper-item>
+
+                    </div>
+                    <div class="layout vertical flex">
+                      <paper-item>
+                          <paper-item-body two-line>
+                              <div class="header">Time Zone</div>
+                              <div secondary>Eastern Time</div>
+                          </paper-item-body>
+                      </paper-item>
+                        <paper-item>
+                            <paper-item-body two-line class="layout vertical">
+                                <div class='header'>Last Name</div>
+                                <div secondary>{{driverData.name}}</div>
+                            </paper-item-body>
+                        </paper-item>
+                        <paper-item>
+                            <paper-item-body two-line>
+                                <div class="header">SIN</div>
+                                <div secondary>Canada</div>
+                            </paper-item-body>
+                        </paper-item>
+                        <paper-item>
+                            <paper-item-body two-line>
+                                <div class="header">Date of Employment</div>
+                                <div secondary>05/05/2012</div>
+                            </paper-item-body>
+                        </paper-item>
+                        <paper-item>
+                            <paper-item-body two-line>
+                                <div class="header">Terminal</div>
+                                <div secondary>TDSM Wagropur</div>
+                            </paper-item-body>
+                        </paper-item>
+                        <paper-item>
+                            <paper-item-body two-line>
+                                <div class="header">Unit</div>
+                                <div secondary>1735</div>
+                            </paper-item-body>
+                        </paper-item>
+                        <paper-item>
+                            <paper-item-body two-line>
+                                <div class="header">Language</div>
+                                <div secondary>English</div>
+                            </paper-item-body>
+                        </paper-item>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+    </template>
+    <script>
+    Polymer({
+        is: 'driver-profile',
+        properties: {
+            driverData: {
+                type: Object,
+                notify: true
+
+            }
+            /*,
+                        animationConfig: {
+                            value: function() {
+                                return {
+                                    'entry': 'hero-animation',
+                                    id: 'card',
+                                    toPage: this,
+                                    timing: {
+                                        duration: 3000
+                                    }
+                                };
+                            }
+                        },
+
+                        sharedElements: {
+                            value: function() {
+                                return {
+                                    'card': this.$.tt
+                                };
+                            }
+                        }*/
+
+        },
+        ready: function() {
+            //   console.log(this.sharedElements.card);
+        },
+        back: function() {
+                this.parentNode.selected = 'driversList';
+
+
+            },
+            viewDocuments:function(){
+              this.parentNode.selected='driverDocuments';
+              console.log('hello');
+            }
+            /*,
+                    bahaviors: [Polymer.NeonSharedElementAnimatableBehavior]*/
+    });
+    </script>
+</dom-module>
