@@ -1,4 +1,4 @@
-<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+
 <dom-module id="drivers-list">
     <template>
         <style>
@@ -163,7 +163,7 @@
                 <span>{{driversData.length}}</span><i>Records</i> </div>
             <div content>
                 <!-- horizontal center layout https://api.myjson.com/bins/3c806-->
-                <iron-ajax auto url="../../../drivers.json" handle-as="json" last-response="{{driversData
+                <iron-ajax auto url="../../drivers.json" handle-as="json" last-response="{{driversData
 }}" on-response="_handleResponse" debounce-duration="300"></iron-ajax>
                 <div class="layout horizontal center wrap flex ">
                     <template is="dom-repeat" items="{{orderDrivers}}" as='drivers'>

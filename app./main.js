@@ -8,6 +8,7 @@ var Parser = require('node-dbf');
 var jetpack = require('fs-jetpack');
 var spawn = require('child_process').spawn;
 var path = require('path');
+var fs = require('fs');
 
 var mainWindow;
 
@@ -20,9 +21,8 @@ var mainWindowState = windowStateKeeper('main', {
 // You have data from config/env_XXX.json file loaded here in case you need it.
 // console.log(env.name);
 
-
 var parser = new Parser('T:\\TDSM_Wagropur\\dbf\\driver.dbf');
-parser.on('start',function(p) {
+parser.on('start',function() {
   console.log('dbf file is parsed');
 });
 parser.on('end',function() {
@@ -30,8 +30,8 @@ parser.on('end',function() {
   jetpack.append('driver.json',JSON.stringify(drivers));
 });
 
-
-var drivers = [];
+var drivers ;
+drivers = [];
 parser.on('record',function(record) {
   drivers.push(record);
 
@@ -41,18 +41,26 @@ parser.on('record',function(record) {
 });
 
 function getDriverID() {
-  var test = spawn(__dirname + './dataLayer/dataRequestModule.exe');
+  var test = spawn(__dirname + '/dataLayer/dataRequestModule.exe',
+  ['vfpDriverList~c://tdsm_w//dbf//~test~lname']);
   test.stdout.on('data',function(data) {
-    // console.log(data.toString('utf-8'));
-    console.log('new data');
-    jetpack.writeAsync('drivers.json',data.toString('utf-8'))
-    .then(function(){
-      console.log(done);
+
+    console.log(' new data');
+
+    console.log(data.toString('utf-8'));
+
+    // console.log('new data'+ data.toString('utf-8'));
+    var path = __dirname + '/drivers.json';
+    fs.writeFile(path, data,'utf8',function() {
+      console.log('done');
     });
+    // jetpack.write(__dirname+ '/drivers.json',data.toString('utf-8'));
+
   });
 }
-  getDriverID();
+
 app.on('ready', function() {
+  getDriverID();
 
   mainWindow = new BrowserWindow({
     x: mainWindowState.x,
@@ -66,10 +74,8 @@ app.on('ready', function() {
   }
 
   mainWindow.loadUrl('file://' + __dirname + '/index.html');
-  //getDriverID();
+
   //parser.parse();
-
-
 
   mainWindow.on('close', function() {
     mainWindowState.saveState(mainWindow);
