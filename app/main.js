@@ -41,8 +41,7 @@ parser.on('record',function(record) {
 });
 
 function getDriverID() {
-  var test = spawn(__dirname + '/dataLayer/dataRequestModule.exe',
-  ['vfpDriverList~c://tdsm_w//dbf//~test~lname']);
+  var test = spawn(__dirname + '/dataLayer/dataRequestModule.exe', ['vfpDriverList~c://tdsm_w//dbf//~test~lname']);
   test.stdout.on('data',function(data) {
 
     console.log(' new data');
@@ -59,8 +58,9 @@ function getDriverID() {
   });
 }
 
+getDriverID();
 app.on('ready', function() {
-  getDriverID();
+ 
 
   mainWindow = new BrowserWindow({
     x: mainWindowState.x,
@@ -73,9 +73,10 @@ app.on('ready', function() {
     mainWindow.maximize();
   }
 
-  mainWindow.loadUrl('file://' + __dirname + '/index.html');
+  mainWindow.loadURL('file://' + __dirname + '/index.html');
 
   //parser.parse();
+
 
   mainWindow.on('close', function() {
     mainWindowState.saveState(mainWindow);

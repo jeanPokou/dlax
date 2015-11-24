@@ -1,5 +1,5 @@
 {
-	"version":0.0.0,
+	"version":"0.0.0",
 	"name":"dlax",
   "devDependencies": {
     "electron-prebuilt": "^0.24.0",
