@@ -1,6 +1,6 @@
 {
-	"version":"0.0.0",
-	"name":"dlax",
+  "version": "0.0.0",
+  "name": "dlax",
   "devDependencies": {
     "electron-prebuilt": "^0.24.0",
     "esperanto": "^0.6.17",
@@ -32,6 +32,7 @@
   "dependencies": {
     "dbfkit": "^1.0.9",
     "edge": "^4.0.0",
+    "mimelib": "^0.2.19",
     "node-dbf": "^0.1.0"
   }
 }

@@ -163,16 +163,19 @@
                 <span>{{driversData.length}}</span><i>Records</i> </div>
             <div content>
                 <!-- horizontal center layout https://api.myjson.com/bins/3c806-->
-                <iron-ajax auto url="../../drivers.json" handle-as="json" last-response="{{driversData
-}}" on-response="_handleResponse" debounce-duration="300"></iron-ajax>
+                <iron-ajax auto url="../../drivers.json" handle-as="json" last-response="{{driversData}}" on-response="_handleResponse"></iron-ajax>
                 <div class="layout horizontal center wrap flex ">
                     <template is="dom-repeat" items="{{orderDrivers}}" as='drivers'>
                         <div class="letter" hidden$="{{_compute(sortApha)}}">
                             <a name="{{drivers.firstLetter}}"></a><span>{{drivers.firstLetter}}</span></div>
                         <template is=dom-repeat items="{{drivers.drivers}}" as="item" on-click="viewDriverInfo" id="driversList">
-                            <driver-card id="{{item.email}}" data="{{item}}" on-click='_view'></driver-card>
+                         <driver-card id="{{item.driverId}}" data="{{item}}" on-click='_view'></driver-card>
                         </template>
                     </template>
+                    <!-- <template is="dom-repeat" items="{{driversData}}" as ='drivers'>
+                             <driver-card id="{{drivers.driverId}}" data="{{drivers}}" on-click='_view'></driver-card>
+
+                    </template> -->
                 </div>
                 <div id="alphabet" class=" layout vertical" hidden$="{{_compute(sortApha)}}">
                     <template is="dom-repeat" items="{{alphabet}}">
@@ -316,8 +319,8 @@
 
             if (this.resultBy === 'Last Name') {
                 for (i = 0; i < this.driversData.length; i++) {
-                    if (this.driversData[i].name.indexOf(this.search.toUpperCase()) === -1) {
-                        id = this.driversData[i].email;
+                    if (this.driversData[i].firstName.indexOf(this.search.toUpperCase()) === -1) {
+                        id = this.driversData[i].driverId;
                         // console.log(id);
                         document.getElementById(id).style.display = 'none';
                     }
@@ -325,7 +328,7 @@
             } else if (this.resultBy === 'Group') {
                 for (i = 0; i < this.driversData.length; i++) {
                     if (this.driversData[i].Group !== this.search.toUpperCase()) {
-                        id = this.driversData[i].email;
+                        id = this.driversData[i].driverId;
                         document.getElementById(id).style.display = 'none';
                     }
                 }
@@ -334,8 +337,8 @@
 
             if (this.search === '') {
                 for (i = 0; i < this.driversData.length; i++) {
-                    if (this.driversData[i].name.indexOf(this.search.toUpperCase()) > -1) {
-                        id = this.driversData[i].email;
+                    if (this.driversData[i].firstName.indexOf(this.search.toUpperCase()) > -1) {
+                        id = this.driversData[i].driverId;
                         //   console.log(id);
                         document.getElementById(id).style.display = 'flex';
                     }
@@ -348,10 +351,10 @@
         },
 
         byFirstName: function(a, b) {
-            if (a.name < b.name) {
+            if (a.firstName < b.firstName) {
                 return -1;
             }
-            if (a.name > b.name) {
+            if (a.firstName > b.firstName) {
                 return 1;
             }
             return 0;
@@ -359,6 +362,7 @@
         },
         _handleResponse: function(e) {
             this._orderAphabetical();
+            
             console.log(e.detail.response);
         },
 
@@ -407,10 +411,10 @@
             this.driversData.sort(function(a, b) {
 
 
-                if (a.name < b.name) {
+                if (a.firstName < b.firstName) {
                     return -1;
                 }
-                if (a.name > b.name) {
+                if (a.firstName > b.firstName) {
                     return 1;
                 }
                 return 0;
@@ -422,13 +426,13 @@
 
 
                 var items = {};
-                var firstLetter = this.driversData[i].name.substring(0, 1).toUpperCase();
+                var firstLetter = this.driversData[i].firstName.substring(0, 1).toUpperCase();
                 if (letters.indexOf(firstLetter) === -1) {
 
                     items.firstLetter = firstLetter;
                     items.drivers = [];
                     for (var j = 0; j < this.driversData.length; j++) {
-                        if (this.driversData[j].name.substring(0, 1).toUpperCase() === firstLetter) {
+                        if (this.driversData[j].firstName.substring(0, 1).toUpperCase() === firstLetter) {
                             items.drivers.push(this.driversData[j]);
                         }
                     }
