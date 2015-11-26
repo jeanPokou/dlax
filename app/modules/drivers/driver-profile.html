@@ -195,6 +195,9 @@
           @apply(--layout-fex);
           border-left:1px solid #ccc;
         }
+        .rating{
+            color: black;
+        }
         </style>
         <div main layout vertical id="tt">
             <paper-toolbar>
@@ -210,7 +213,9 @@
                 <div dash>
                     <div class="layout vertical flex center">
                         <div class="layout horizontal center">
-                            <img src="{{driverData.avatar}}" alt="" class="avatar ">
+                                <iron-image   class="avatar" placeholder="../../avatar.jpg"
+                    sizing="cover" preload src="{{driverData.avatar}}"></iron-image>
+
                             <paper-badge label="-183"></paper-badge>
                         </div>
                         <div class="layout horizontal center ">
@@ -222,6 +227,8 @@
                                     <iron-icon icon="mdi:star"></iron-icon>
                                         <iron-icon icon="mdi:star"></iron-icon>
                                             <iron-icon icon="mdi:star"></iron-icon>
+                                            <!-- <iron-icon icon="mdi:star"></iron-icon>
+                                              <star-rating showtotals="true" stars="5" rate="3" class="rating" icon="mdi:star" ></star-rating> -->
                         </div>
                     </div>
                     <!-- class="vertical flex-2 center" style="border:1px solid white;height:100%" -->
@@ -234,8 +241,8 @@
                 <div info>
                     <div class="layout center horizontal">
                         <div class="layout vertical center">
-                            <span class="fullName">{{driverData.name}}</span>
-                            <span class="comanyID">32541</span>
+                            <span class="fullName">{{driverData.firstName}}</span>
+                            <span class="comanyID">{{driverData.driverId}}</span>
                             <paper-icon-item>
                                 <iron-icon icon="communication:phone"></iron-icon> <span>{{driverData.phone}}</span>
                             </paper-icon-item>
