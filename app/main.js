@@ -4,15 +4,10 @@ var app = require('app');
 var BrowserWindow = require('browser-window');
 var env = require('./vendor/electron_boilerplate/env_config');
 var windowStateKeeper = require('./vendor/electron_boilerplate/window_state');
-var Parser = require('node-dbf');
-var jetpack = require('fs-jetpack');
-var spawn = require('child_process').spawn;
-var path = require('path');
-var fs = require('fs');
-var mimelib = require('mimelib');
+var DriversApi = require('./api/Drivers');
+var fs =  require('fs');
 // var events = require('events');
 // var eventEmitter = new events.eventEmitter();
-
 
 var mainWindow;
 
@@ -22,49 +17,22 @@ var mainWindowState = windowStateKeeper('main', {
   height: 600
 });
 
+var api = new DriversApi();
+api.on('drivers',function(data) {
+
+  var path = __dirname + '/drivers.json';
+  console.log('path' + path);
+  fs.writeFile(path, data,'utf8',function() {
+    mainWindow.loadURL('file://' + __dirname + '/index.html');
+    console.log('done loading');
+  });
+});
 // You have data from config/env_XXX.json file loaded here in case you need it.
 // console.log(env.name);
 
-var parser = new Parser('T:\\TDSM_Wagropur\\dbf\\driver.dbf');
-parser.on('start',function(p) {
-  console.log('dbf file is parsed');
-});
-parser.on('end',function() {
-  console.log('parsing done !');
-  jetpack.append('driver.json',JSON.stringify(drivers));
-});
-
-var drivers = [];
-parser.on('record',function(record) {
-  drivers.push(record);
-
-  // for (var key in record) {
-  //   jetpack.append('driver.json',JSON.stringify(record[key]));
-  // }
-});
-
-function getDriverID() {
-
-  var test = spawn(__dirname + '/dataLayer/dataRequestModule.exe',
-  ['t:/TDSM_Wagropur/dbf/driver.dbf']);
-  test.stdout.on('data',function(data) {
-
-    console.log(' new data');
-    console.log(data.toString('utf-8'));
-    // console.log('new data'+ data.toString('utf-8'));
-    var path = __dirname + '/drivers.json';
-    fs.writeFile(path, data,'utf8',function() {
-      console.log('done');
-      mainWindow.loadURL('file://' + __dirname + '/index.html');
-    });
-    // jetpack.write(__dirname+ '/drivers.json',data.toString('utf-8'));
-
-  });
-}
-
 app.on('ready', function() {
 
-  getDriverID();
+  //  getDriverID();
   mainWindow = new BrowserWindow({
     x: mainWindowState.x,
     y: mainWindowState.y,
@@ -75,8 +43,6 @@ app.on('ready', function() {
   if (mainWindowState.isMaximized) {
     mainWindow.maximize();
   }
-  // mainWindow.loadURL('file://' + __dirname + '/index.html');
-  //parser.parse();
 
   mainWindow.on('close', function() {
     mainWindowState.saveState(mainWindow);
