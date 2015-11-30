@@ -96,7 +96,7 @@
                     <paper-icon-button icon="search"></paper-icon-button>
                     <paper-icon-button icon="mail"></paper-icon-button>
                     <paper-icon-button icon="toc"></paper-icon-button>
-                    <paper-icon-button icon="more-vert"></paper-icon-button>
+                    <paper-icon-button icon="settings" on-click="showSettings"></paper-icon-button>
                     <!-- Application name -->
                     <div class="middle middle-container center horizontal layout">
                         <div class="app-name">DLAX</div>
@@ -176,6 +176,9 @@
         },
         scrollToTop: function() {
 
+        },
+        showSettings: function () {
+            console.log('hello');
         },
         behaviors: [Polymer.NeonSharedElementAnimatableBehavior]
 

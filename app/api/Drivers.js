@@ -11,7 +11,8 @@ var DriversApi = function() {
   var self = this;
   // listener for spawn  data event
   apiExe.stdout.on('data',function(data) {
-      self.emit('drivers',data.toString('utf-8'));
+    //console.log(data.toString('utf-8'));
+    self.emit('drivers',data.toString('utf-8'));
   });
 
   self.loadDrivers = function() {
@@ -26,7 +27,7 @@ var DriversApi = function() {
   self.on('edit',self.edit);
 
   //loading the drives list
-  self.loadDrivers();
+ self.loadDrivers();
 };
 util.inherits(DriversApi,EventEmitter);
 module.exports = DriversApi ;
