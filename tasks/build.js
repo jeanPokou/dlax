@@ -21,6 +21,7 @@ var paths = {
       '!app/vendor/**'
   ],
   toCopy: [
+      'app/api/**/*',
       'app/main.js',
       'app/spec.js',
       'app/node_modules/**',

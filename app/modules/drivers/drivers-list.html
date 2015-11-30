@@ -163,7 +163,7 @@
                 <span>{{driversData.length}}</span><i>Records</i> </div>
             <div content>
                 <!-- horizontal center layout https://api.myjson.com/bins/3c806-->
-                <iron-ajax auto url="../../drivers.json" handle-as="json" last-response="{{driversData}}" on-response="_handleResponse"></iron-ajax>
+                <!-- <iron-ajax auto url="../../drivers.json" handle-as="json" last-response="{{driversData}}" on-response="_handleResponse"></iron-ajax> -->
                 <div class="layout horizontal center wrap flex ">
                     <template is="dom-repeat" items="{{orderDrivers}}" as='drivers'>
                         <div class="letter" hidden$="{{_compute(sortApha)}}">
@@ -209,7 +209,8 @@
                 notify: true,
                 value: function() {
                     return [];
-                }
+                },
+                observer:'_handleResponse'
 
             },
             search: {
@@ -360,10 +361,10 @@
             return 0;
 
         },
-        _handleResponse: function(e) {
+        _handleResponse: function() {
             this._orderAphabetical();
-            
-            console.log(e.detail.response);
+            //
+            // console.log(e.detail.response);
         },
 
         showSearch: function() {
@@ -394,7 +395,7 @@
 
 
         ready: function() {
-            //    this.driversData = window.driversData;
+             //  this.driversData = window.getdrivers;
             //  this.$.searchBar.style.display = 'none';
 
             this.sortApha = false;

@@ -164,7 +164,7 @@
         }
 
         paper-item {
-            border-top: 1px solid #ccc;
+            /*border-top: 1px solid #ccc;*/
         }
 
         h2 {
@@ -213,7 +213,7 @@
                 <div dash>
                     <div class="layout vertical flex center">
                         <div class="layout horizontal center">
-                                <iron-image   class="avatar" placeholder="../../avatar.jpg"
+                                <iron-image   class="avatar" placeholder="avatar.jpg"
                     sizing="cover" preload src="{{driverData.avatar}}"></iron-image>
 
                             <paper-badge label="-183"></paper-badge>
@@ -244,7 +244,7 @@
                             <span class="fullName">{{driverData.firstName}}</span>
                             <span class="comanyID">{{driverData.driverId}}</span>
                             <paper-icon-item>
-                                <iron-icon icon="communication:phone"></iron-icon> <span>{{driverData.phone}}</span>
+                                <iron-icon icon="communication:phone"></iron-icon> <span>{{driverData.Phone}}</span>
                             </paper-icon-item>
                             <paper-icon-item>
                                 <iron-icon icon="communication:email"> </iron-icon> <span>{{driverData.email}}</span>
@@ -306,14 +306,14 @@
                 <div class="layout horizontal center">
                     <h2>Personal informations</h2>
                     <span class="flex"></span>
-                    <paper-icon-button icon="editor:mode-edit"></paper-icon-button>
+                    <paper-icon-button icon="editor:mode-edit" on-click="edit"></paper-icon-button>
                 </div>
                 <div details>
                     <div class="layout vertical flex">
                         <paper-item>
                             <paper-item-body two-line class="layout vertical">
-                                <div class='header'>FirstName</div>
-                                <div secondary>{{driverData.name}}</div>
+                                <div class='header'>First Name</div>
+                                <div secondary>{{driverData.firstName}}</div>
                             </paper-item-body>
                         </paper-item>
                         <paper-item>
@@ -325,25 +325,25 @@
                         <paper-item>
                             <paper-item-body two-line>
                                 <div class="header">City</div>
-                                <div secondary>{{driverData.address.city}}</div>
+                                <div secondary>{{driverData.city}}</div>
                             </paper-item-body>
                         </paper-item>
                         <paper-item>
                             <paper-item-body two-line>
                                 <div class="header">Street</div>
-                                <div secondary>{{driverData.address.street}}</div>
+                                <div secondary>{{driverData.address}}</div>
                             </paper-item-body>
                         </paper-item>
                         <paper-item>
                             <paper-item-body two-line>
                                 <div class="header">Zip Code</div>
-                                <div secondary>{{driverData.address.zipcode}}</div>
+                                <div secondary>{{driverData.postCode}}</div>
                             </paper-item-body>
                         </paper-item>
                         <paper-item>
                             <paper-item-body two-line>
                                 <div class="header">Province</div>
-                                <div secondary>NB</div>
+                                <div secondary>{{driverData.prov}}</div>
                             </paper-item-body>
                         </paper-item>
                         <paper-item>
@@ -362,15 +362,17 @@
                           </paper-item-body>
                       </paper-item>
                         <paper-item>
-                            <paper-item-body two-line class="layout vertical">
+                            <paper-item-body two-line class="layout vertical"  hidden$="{{!isEditable}}">
                                 <div class='header'>Last Name</div>
-                                <div secondary>{{driverData.name}}</div>
+                                <div secondary>{{driverData.lName}}</div>
+
                             </paper-item-body>
+                            <paper-input label="Last Name" hidden$="{{isEditable}}" value={{driverData.lName}}></paper-input>
                         </paper-item>
                         <paper-item>
                             <paper-item-body two-line>
                                 <div class="header">SIN</div>
-                                <div secondary>Canada</div>
+                                <div secondary>{{driver.SIN}}</div>
                             </paper-item-body>
                         </paper-item>
                         <paper-item>
@@ -382,7 +384,7 @@
                         <paper-item>
                             <paper-item-body two-line>
                                 <div class="header">Terminal</div>
-                                <div secondary>TDSM Wagropur</div>
+                                <div secondary>{{driver.homeTerminal}}</div>
                             </paper-item-body>
                         </paper-item>
                         <paper-item>
@@ -411,6 +413,13 @@
                 type: Object,
                 notify: true
 
+            },
+            isEditable:{
+                type:Boolean,
+                value:function () {
+                  return true;
+                }
+
             }
             /*,
                         animationConfig: {
@@ -435,8 +444,13 @@
                         }*/
 
         },
+        edit:function(){
+                this.isEditable = !this.isEditable;
+        },
+
         ready: function() {
             //   console.log(this.sharedElements.card);
+            this.isEditable=true;
         },
         back: function() {
                 this.parentNode.selected = 'driversList';

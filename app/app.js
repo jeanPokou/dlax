@@ -11,7 +11,22 @@
 //
 // // window.env contains data from config/env_XXX.json file.
 // var envName = window.env.name;
+var drivers = [];
+var DriversApi = require('./api/Drivers');
+var fs =  require('fs');
+var api = new DriversApi();
+api.on('drivers',function(data) {
 
-// document.getElementById('greet').innerHTML = greet();
+  var path = __dirname + '/drivers.json';
+  fs.writeFile(path, data,'utf8',function() {
+    drivers = JSON.parse(data);
+    document.querySelector('#driversList').driversData  = drivers;
+  });
+});
+
+window.addEventListener('WebComponentsReady', function() {
+
+});
+
 // document.getElementById('platform-info').innerHTML = os.platform();
 // document.getElementById('env-name').innerHTML = envName;
