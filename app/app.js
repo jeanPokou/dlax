@@ -1,22 +1,16 @@
-var drivers = [];
 var DriversApi = require('./api/Drivers');
 var api = new DriversApi();
+
 var drivers = [];
-api.on('drivers',function(data) {
-   drivers = JSON.parse(data.toString('utf-8'));
-   // var path = __dirname + '/drivers.json';
-   // fs.writeFile(path, data,'utf8',function() {
-   //   drivers = JSON.parse(data);
-   //   //document.querySelector('#driversList').driversData  = drivers;
-   // });
- });
 
 window.addEventListener('WebComponentsReady', function() {
-  document.querySelector('#driversList').driversData  = drivers;
-  var dlxapp = document.querySelector('dlax-app');
-  // dlxapp.addEventListener('show_Settings', function() {
-  //    ipc.send('show-settings');
-  //  });
+  api.on('drivers',function(data) {
+    console.log('in drivers');
+    drivers = JSON.parse(data.toString('utf-8'));
+    document.querySelector('#driversList').driversData  = drivers;
+    var dlxapp = document.querySelector('dlax-app');
+
+  });
 });
 
 // document.getElementById('platform-info').innerHTML = os.platform();
@@ -34,3 +28,8 @@ window.addEventListener('WebComponentsReady', function() {
 //
 // // window.env contains data from config/env_XXX.json file.
 // var envName = window.env.name;
+//    var path = __dirname + '/drivers.json';
+    // fs.writeFile(path, data,'utf-8',function() {
+    //   // drivers = JSON.parse(data);
+    //   //document.querySelector('#driversList').driversData  = drivers;
+    // });

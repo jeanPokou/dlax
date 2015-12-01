@@ -1,22 +1,26 @@
 var spawn = require('child_process').spawn;
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
-//var dbPath = 'c:/TDSM_W/dbf/';
-var dbPath = 't:/TDSM_Wagropur/dbf/';
+var trailingNewline = require('trailing-newline');
+var dbPath = 'T:/TDSM_Wdistech/dbf';
 var apiExe = spawn(__dirname + '/dataLayer/dataRequestModule.exe',
 []);
 
 var DriversApi = function() {
 
   var self = this;
+  var driversJson = '';
   // listener for spawn  data event
   apiExe.stdout.on('data',function(data) {
-    //console.log(data.toString('utf-8'));
-    self.emit('drivers',data.toString('utf-8'));
+    driversJson += data.toString('utf-8');
+    if (trailingNewline(data.toString('utf-8'))) {
+      self.emit('drivers',driversJson);
+    }
+
   });
 
   self.loadDrivers = function() {
-    apiExe.stdin.write(dbPath + 'driver.dbf\n');
+    apiExe.stdin.write(dbPath + '/driver.dbf\n');
   };
 
   self.edit = function() {
@@ -27,7 +31,7 @@ var DriversApi = function() {
   self.on('edit',self.edit);
 
   //loading the drives list
- self.loadDrivers();
+  self.loadDrivers();
 };
 util.inherits(DriversApi,EventEmitter);
 module.exports = DriversApi ;

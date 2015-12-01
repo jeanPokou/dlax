@@ -14,19 +14,19 @@ var mainWindowState = windowStateKeeper('main', {
   height: 600
 });
 
-settingsWindow = new BrowserWindow({
-    width: 640,
-    height: 480,
-    show: false,
-  });
+// settingsWindow = new BrowserWindow({
+//     width: 640,
+//     height: 480,
+//     show: false,
+//   });
 
-settingsWindow.loadUrl('file://' + __dirname +
-    '/modules/settings/settings.html');
-
-ipc.on('show-settings',function() {
-    settingsWindow.show();
-    console.log('hello');
-  });
+// settingsWindow.loadUrl('file://' + __dirname +
+//     '/modules/settings/settings.html');
+//
+// ipc.on('show-settings',function() {
+//     settingsWindow.show();
+//     console.log('hello');
+//   });
 
 app.on('ready', function() {
 
