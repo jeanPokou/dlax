@@ -1,37 +1,44 @@
-var spawn = require('child_process').spawn;
+ var spawn = require('child_process').spawn;
 var util = require('util');
-var EventEmitter = require('events').EventEmitter;
+var events = require('async-node-events');
 var trailingNewline = require('trailing-newline');
-var dbPath = 'T:/TDSM_Wdistech/dbf';
+var dbPath = 'C:/TDSM_W/dbf';
+// var dbPath = 'T:/TDSM_Wdistech/dbf';
 var apiExe = spawn(__dirname + '/dataLayer/dataRequestModule.exe',
 []);
 
-var DriversApi = function() {
+function  DriversApi() {
+  events.call(this);
+  this.driversList = [] ;
 
+}
+util.inherits(DriversApi,events);
+
+DriversApi.prototype.loadDrivers = function() {
+  apiExe.stdin.write(dbPath + '/driver.dbf\n');
   var self = this;
   var driversJson = '';
   // listener for spawn  data event
   apiExe.stdout.on('data',function(data) {
-    driversJson += data.toString('utf-8');
-    if (trailingNewline(data.toString('utf-8'))) {
-      self.emit('drivers',driversJson);
-    }
+        driversJson += data.toString('utf-8');
+        if (trailingNewline(data.toString('utf-8'))) {
+          //  console.log(driversJson);
 
-  });
+          self.emit('driversLoaded',driversJson);
 
-  self.loadDrivers = function() {
-    apiExe.stdin.write(dbPath + '/driver.dbf\n');
-  };
+        }
 
-  self.edit = function() {
-    //  test.stdin.setEncoding('utf-8');
-    //  test.stdin.write('c:/tdsm_w/dbf/drivers.dbf');
-  };
+      });
 
-  self.on('edit',self.edit);
+  self.on('driversLoaded',function(data) {
+            console.log('in drivers');
+            self.driversList = JSON.parse(data.toString('utf-8'));
+            //    console.log(self.driversList);
+            var dl = document.querySelector('drivers-list');
+            dl.driversData = self.driversList;
 
-  //loading the drives list
-  self.loadDrivers();
+          });
+
 };
-util.inherits(DriversApi,EventEmitter);
-module.exports = DriversApi ;
+
+module.exports = new  DriversApi() ;

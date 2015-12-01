@@ -10,6 +10,7 @@
     "target": "development"
   },
   "dependencies": {
+    "async-node-events": "0.0.7",
     "fs-jetpack": "^0.6.4",
     "trailing-newline": "^1.0.0"
   }

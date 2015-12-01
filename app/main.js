@@ -14,23 +14,24 @@ var mainWindowState = windowStateKeeper('main', {
   height: 600
 });
 
-// settingsWindow = new BrowserWindow({
-//     width: 640,
-//     height: 480,
-//     show: false,
-//   });
+function createSettings() {
+  settingsWindow = new BrowserWindow({
+        width: 640,
+        height: 480,
+        show: false
+      });
+  settingsWindow.loadUrl('file://' + __dirname +
+      '/modules/settings/settings.html');
 
-// settingsWindow.loadUrl('file://' + __dirname +
-//     '/modules/settings/settings.html');
-//
-// ipc.on('show-settings',function() {
-//     settingsWindow.show();
-//     console.log('hello');
-//   });
+  // ipc.on('show-settings',function() {
+  //   settingsWindow.show();
+  //   console.log('hello');
+  // });
+  settingsWindow.show();
+}
 
 app.on('ready', function() {
 
-  //  getDriverID();
   mainWindow = new BrowserWindow({
     x: mainWindowState.x,
     y: mainWindowState.y,
@@ -45,6 +46,9 @@ app.on('ready', function() {
   mainWindow.on('close', function() {
     mainWindowState.saveState(mainWindow);
   });
+  createSettings();
+
+  mainWindow.openDevTools();
 });
 
 app.on('window-all-closed', function() {

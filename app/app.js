@@ -1,17 +1,14 @@
 var DriversApi = require('./api/Drivers');
-var api = new DriversApi();
 
-var drivers = [];
+var ipc = require('ipc');
 
+// var settingsWindow;
+//loading the drives list
 window.addEventListener('WebComponentsReady', function() {
-  api.on('drivers',function(data) {
-    console.log('in drivers');
-    drivers = JSON.parse(data.toString('utf-8'));
-    document.querySelector('#driversList').driversData  = drivers;
-    var dlxapp = document.querySelector('dlax-app');
+  DriversApi.loadDrivers();
 
-  });
 });
+
 
 // document.getElementById('platform-info').innerHTML = os.platform();
 // document.getElementById('env-name').innerHTML = envName;

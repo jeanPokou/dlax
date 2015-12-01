@@ -27,7 +27,8 @@ var paths = {
       'app/node_modules/**',
       'app/bower_components/**',
       'app/vendor/**',
-      '*.html'
+      '*.html',
+      '*.jpg'
   ],
 };
 
