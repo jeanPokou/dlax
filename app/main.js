@@ -17,7 +17,7 @@ var mainWindowState = windowStateKeeper('main', {
 function createSettings() {
   settingsWindow = new BrowserWindow({
         width: 640,
-        height: 480,
+        height: 280,
         show: false
       });
   settingsWindow.loadUrl('file://' + __dirname +
@@ -27,7 +27,9 @@ function createSettings() {
   //   settingsWindow.show();
   //   console.log('hello');
   // });
+  settingsWindow.openDevTools();
   settingsWindow.show();
+
 }
 
 app.on('ready', function() {

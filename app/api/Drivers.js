@@ -14,8 +14,13 @@ function  DriversApi() {
 }
 util.inherits(DriversApi,events);
 
-DriversApi.prototype.loadDrivers = function() {
-  apiExe.stdin.write(dbPath + '/driver.dbf\n');
+DriversApi.prototype.loadDrivers = function(path) {
+  if (util.isNullOrUndefined(path)) {
+    path = dbPath + '/driver.dbf\n';
+  } else {
+    path = path + '/driver.dbf\n';
+  }
+  apiExe.stdin.write(path);
   var self = this;
   var driversJson = '';
   // listener for spawn  data event
@@ -35,7 +40,7 @@ DriversApi.prototype.loadDrivers = function() {
             self.driversList = JSON.parse(data.toString('utf-8'));
             //    console.log(self.driversList);
             var dl = document.querySelector('drivers-list');
-            dl.driversData = self.driversList;
+            dl.set('driversData',self.driversList);
 
           });
 

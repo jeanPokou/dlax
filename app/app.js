@@ -5,7 +5,8 @@ var ipc = require('ipc');
 // var settingsWindow;
 //loading the drives list
 window.addEventListener('WebComponentsReady', function() {
-  DriversApi.loadDrivers();
+    var a='T:/TDSM_Wdistech/dbf';
+  DriversApi.loadDrivers(a);
 
 });
 
