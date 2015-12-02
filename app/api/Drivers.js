@@ -2,7 +2,7 @@
 var util = require('util');
 var events = require('async-node-events');
 var trailingNewline = require('trailing-newline');
-var dbPath = 'C:/TDSM_W/dbf';
+//var dbPath = 'C:/TDSM_W/dbf';
 // var dbPath = 'T:/TDSM_Wdistech/dbf';
 var apiExe = spawn(__dirname + '/dataLayer/dataRequestModule.exe',
 []);
@@ -15,6 +15,10 @@ function  DriversApi() {
 util.inherits(DriversApi,events);
 
 DriversApi.prototype.loadDrivers = function(path) {
+  // return if path is empty
+  if (path === '') {
+    return ;
+  }
   if (util.isNullOrUndefined(path)) {
     path = dbPath + '/driver.dbf\n';
   } else {
@@ -37,12 +41,18 @@ DriversApi.prototype.loadDrivers = function(path) {
 
   self.on('driversLoaded',function(data) {
             console.log('in drivers');
+            self.driversList = [];
             self.driversList = JSON.parse(data.toString('utf-8'));
             //    console.log(self.driversList);
             var dl = document.querySelector('drivers-list');
+            resetDriverList(dl);
             dl.set('driversData',self.driversList);
 
           });
+  function resetDriverList(dl) {
+    dl.set('driversData',[]);
+    dl.set('orderDrivers',[]);
+  }
 
 };
 

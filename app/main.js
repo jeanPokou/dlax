@@ -28,7 +28,7 @@ function createSettings() {
   //   console.log('hello');
   // });
   settingsWindow.openDevTools();
-  settingsWindow.show();
+  //settingsWindow.show();
 
 }
 

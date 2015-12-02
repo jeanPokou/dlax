@@ -1,11 +1,18 @@
 'use strict';
 
 var gulp = require('gulp');
+var $ = require('gulp-load-plugins')();
 var less = require('gulp-less');
 var esperanto = require('esperanto');
 var map = require('vinyl-map');
 var jetpack = require('fs-jetpack');
 var utils = require('./utils');
+var polybuild = require('polybuild');
+var runSequence = require('run-sequence');
+var del = require('del');
+
+// var babel = require('gulp-babel');
+// var crisper = require('gulp-crisper');
 
 var projectDir = jetpack;
 var srcDir = projectDir.cwd('./app');
@@ -21,13 +28,12 @@ var paths = {
       '!app/vendor/**'
   ],
   toCopy: [
-      'app/api/**/*',
+      'app/**/*',
       'app/main.js',
       'app/spec.js',
       'app/node_modules/**',
       'app/bower_components/**',
       'app/vendor/**',
-      '*.html',
       '*.jpg'
   ],
 };
@@ -51,6 +57,24 @@ var copyTask = function() {
   });
 };
 
+//rename index.build.html to index.html
+gulp.task('rename-index',function() {
+  gulp.src('build/index.build.html')
+  .pipe($.rename('index.html'))
+  .pipe(gulp.dest('build/'));
+  return del(['build/index.build.html']);
+});
+//polybuild task index.html
+var polymerBuild = function(src, dest) {
+  return gulp.src(src)
+      .pipe(polybuild({maximumCrush: true}))
+      .pipe(gulp.dest(dest));
+
+};
+gulp.task('polybuild',function() {
+  return polymerBuild('build/index.html','build/');
+});
+
 // copy after cleaning folder
 gulp.task('copy', ['clean'], copyTask);
 //copy i.e overwrite if conflict
@@ -59,12 +83,18 @@ gulp.task('copy-watch', copyTask);
 // function for transpilying all files i.e converting *js files to es6
 var transpileTask = function() {
   return gulp.src(paths.jsCodeToTranspile)
-        .pipe(map(function(code, filename) {
-          var transpiled = esperanto.toAmd(code.toString(), {
-            strict: true
-          });
-          return transpiled.code;
-        }))
+        // .pipe(map(function(code, filename) {
+        //   var transpiled = babel(code.toString(), {
+        //     presets: ['es2015']
+        //   });
+        //
+        //   return transpiled.code;
+        // }))
+        .pipe($.sourcemaps.init())
+        .pipe($.if('*.html',$.crisper()))
+        .pipe($.if('*.js', $.babel({presets: ['es2015']})))
+        .pipe($.sourcemaps.write('.'))
+        .pipe(gulp.dest('.sourcemaps'))
         .pipe(gulp.dest(destDir.path()));
 };
 // transpile task
@@ -74,7 +104,7 @@ gulp.task('transpile-watch', transpileTask);
 // less task
 var lessTask = function() {
   return gulp.src('app/stylesheets/main.less')
-      .pipe(less())
+      .pipe($.less())
       .pipe(gulp.dest(destDir.path('stylesheets')));
 };
 gulp.task('less', ['clean'], lessTask);
@@ -106,10 +136,14 @@ gulp.task('finalize', ['clean'], function() {
   destDir.copy(configFilePath, 'env_config.json');
 });
 
+// watch task
 gulp.task('watch', function() {
   gulp.watch(paths.jsCodeToTranspile, ['transpile-watch']);
   gulp.watch(paths.toCopy, ['copy-watch']);
   gulp.watch('*.less', ['less-watch']);
 });
 
-gulp.task('build', ['transpile', 'less', 'copy', 'finalize']);
+gulp.task('build' ,function(cb) {
+  runSequence('copy' ,'polybuild','rename-index'/*,'rename-index'
+  ['finalize']*/,cb);
+});

@@ -5,11 +5,10 @@ var ipc = require('ipc');
 // var settingsWindow;
 //loading the drives list
 window.addEventListener('WebComponentsReady', function() {
-    var a='T:/TDSM_Wdistech/dbf';
-  DriversApi.loadDrivers(a);
+  var dbPath = 'T:/TDSM_Wdistech/dbf';
+  DriversApi.loadDrivers(dbPath);
 
 });
-
 
 // document.getElementById('platform-info').innerHTML = os.platform();
 // document.getElementById('env-name').innerHTML = envName;
@@ -18,9 +17,9 @@ window.addEventListener('WebComponentsReady', function() {
 // All stuff below is just to show you how it works.
 // -----------------------------------------------------
 
-// Browser modules are imported through new ES6 syntax.
+//Browser modules are imported through new ES6 syntax.
 // import { greet } from './hello_world/hello_world';
-//
+// document.getElementById('greet').innerHTML = greet();
 // // Node modules are required the same way as always.
 // var os = require('os');
 //

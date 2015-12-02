@@ -5,7 +5,6 @@
             display: block;
             text-decoration: none;
         }
-
         [main] {
             @apply(--layout-vertical);
             @apply(--shadow-elevation-2dp);
@@ -15,7 +14,6 @@
             color: black;
             margin: 10px;
         }
-
         [info] {
             @apply(--layout-vertical);
             @apply(--layout-center-center);
@@ -52,37 +50,28 @@ sizing="cover" preload src="{{data.avatar}}"></iron-image>
                 /*avatar: String,
                 name: String*/
                 //, animationConfig: {
-
             //     value: function() {
             //         return {
             //             'entry': {
             //                 name: 'hero-animation',
             //                 id: 'avatar_card',
             //                 fromPage: document.querySelector('#driversList')
-
             //             }
             //         };
             //     }
-
             // }
-
-
         },
-
         ready: function() {
             // this.animationConfig.entry.fromPage = this.id;
             // console.log(this.animationConfig.entry.fromPage);
         },
-
         /*,
                 _onClick: function(e) {
                     this.sharedElements = {
                         'avatar_card': e.target
                     };
-
                     console.log(e.target);
                 }*/
-
         // behaviors: [Polymer.NeonSharedElementAnimatableBehavior]
     });
     </script>
