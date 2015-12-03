@@ -28,14 +28,20 @@ var paths = {
       '!app/vendor/**'
   ],
   toCopy: [
-      'app/**/*',
-      'app/main.js',
-      'app/spec.js',
-      'app/node_modules/**',
-      'app/bower_components/**',
-      'app/vendor/**',
+        'app/main.js',
+        'app/spec.js',
+        'app/node_modules/**',
+        'app/api/**',
+        'app/bower_components/**',
+        'app/vendor/**',
+        '*.html',
       '*.jpg'
   ],
+  toPolyBuild: [
+
+      'app/index.html',
+
+  ]
 };
 
 // -------------------------------------
@@ -68,28 +74,22 @@ gulp.task('rename-index',function() {
 var polymerBuild = function(src, dest) {
   return gulp.src(src)
       .pipe(polybuild({maximumCrush: true}))
+      .pipe($.size())
       .pipe(gulp.dest(dest));
 
 };
 gulp.task('polybuild',function() {
-  return polymerBuild('build/index.html','build/');
+  return polymerBuild(paths.toPolyBuild,'ptest/');
 });
 
 // copy after cleaning folder
-gulp.task('copy', ['clean'], copyTask);
+gulp.task('copy',  copyTask);
 //copy i.e overwrite if conflict
 gulp.task('copy-watch', copyTask);
 
 // function for transpilying all files i.e converting *js files to es6
 var transpileTask = function() {
   return gulp.src(paths.jsCodeToTranspile)
-        // .pipe(map(function(code, filename) {
-        //   var transpiled = babel(code.toString(), {
-        //     presets: ['es2015']
-        //   });
-        //
-        //   return transpiled.code;
-        // }))
         .pipe($.sourcemaps.init())
         .pipe($.if('*.html',$.crisper()))
         .pipe($.if('*.js', $.babel({presets: ['es2015']})))
@@ -98,7 +98,7 @@ var transpileTask = function() {
         .pipe(gulp.dest(destDir.path()));
 };
 // transpile task
-gulp.task('transpile', ['clean'], transpileTask);
+gulp.task('transpile',  transpileTask);
 gulp.task('transpile-watch', transpileTask);
 
 // less task
@@ -111,7 +111,7 @@ gulp.task('less', ['clean'], lessTask);
 gulp.task('less-watch', lessTask);
 
 // task for finialiazing build ie creating the manifest file for Electron
-gulp.task('finalize', ['clean'], function() {
+gulp.task('finalize', function() {
   var manifest = srcDir.read('package.json', 'json');
   switch (utils.getEnvName()) {
     case 'development':
@@ -143,7 +143,6 @@ gulp.task('watch', function() {
   gulp.watch('*.less', ['less-watch']);
 });
 
-gulp.task('build' ,function(cb) {
-  runSequence('copy' ,'polybuild','rename-index'/*,'rename-index'
-  ['finalize']*/,cb);
+gulp.task('build' ,['clean'],function(cb) {
+  runSequence('copy', 'transpile', 'finalize',cb);
 });

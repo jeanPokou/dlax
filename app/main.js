@@ -19,16 +19,17 @@ function createSettings() {
         width: 640,
         height: 280,
         show: false
+
       });
   settingsWindow.loadUrl('file://' + __dirname +
       '/modules/settings/settings.html');
 
-  // ipc.on('show-settings',function() {
-  //   settingsWindow.show();
-  //   console.log('hello');
-  // });
-  settingsWindow.openDevTools();
-  //settingsWindow.show();
+  ipc.on('show-settings',function() {
+    settingsWindow.show();
+    console.log('hello');
+  });
+  // settingsWindow.openDevTools();
+  settingsWindow.show();
 
 }
 
