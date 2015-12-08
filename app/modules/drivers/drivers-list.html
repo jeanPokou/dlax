@@ -92,7 +92,7 @@
             bottom: 10px;
             color: var(--paper-grey-500);
             margin-left: 30px;
-            font-size: 1.3em;
+            font-size: 1.1em;
             margin-top: 10px;
         }
 
@@ -112,7 +112,7 @@
         #alphabet {
             /*     border: 1px solid yellow;*/
             position: fixed;
-            right: 2%;
+            right: 50px;
             top: calc(24% - 10px);
             height: 800px;
             bottom: 0;
@@ -132,22 +132,35 @@
         @media(min-width: 601px) {
             #alphabet {
                 position: fixed;
-                right: 2%;
+                right: 50px;
                 top: calc(40% - 10px);
                 font-size: 0.9em;
             }
         }
+
+        .title{
+            position: relative;
+            font-size: 1.2em;
+            margin-left: 5px;
+
+        }
+
         </style>
         <div main id="listDrivers">
+
+            <div class="numberOfRecords">
+            <iron-icon icon="mdi:view-grid"></iron-icon> <span class="title">Drivers list</span>
+            <!-- <i>List Drivers Informations</i> -->
+            </div>
             <paper-toolbar>
                 <div class="flex">
-                    <paper-input id='searchBar' label="Search" class="search" type="search" value="{{search}}"></paper-input>
+                    <paper-input id='searchBar' label="Search" class="search" type="search" value="{{search}}" change="_filterSearch"></paper-input>
                 </div>
                 <paper-dropdown-menu label='By' selected-item-label="{{resultBy}}">
-                    <paper-menu class="dropdown-content">
+                    <paper-menu class="dropdown-content" selected='3'>
                         <paper-item>Group</paper-item>
                         <paper-item>Terminal</paper-item>
-                        <paper-item>Last Name</paper-item>
+                        <paper-item>First Name</paper-item>
                         <paper-item>ID</paper-item>
                     </paper-menu>
                 </paper-dropdown-menu>
@@ -158,15 +171,15 @@
                     <iron-icon icon="mdi:sort-alphabetical"></iron-icon>
                 </paper-toggle-button>
             </paper-toolbar>
-            <div class="numberOfRecords">
+            <div class="numberOfRecords" hidden$="true">
                 <iron-icon icon="mdi:account-multiple"></iron-icon>
-                <span>{{driversData.length}}</span><i>Records</i> </div>
+                <span >{{recordFound}}</span><i>Record(s)</i> </div>
             <div content>
                 <!-- horizontal center layout https://api.myjson.com/bins/3c806-->
                 <!-- <iron-ajax auto url="../../drivers.json" handle-as="json" last-response="{{driversData}}" on-response="_handleResponse"></iron-ajax> -->
                 <div class="layout horizontal center wrap flex ">
                     <template is="dom-repeat" items="{{orderDrivers}}" as='drivers'>
-                        <div class="letter" hidden$="{{_compute(sortApha)}}">
+                        <div class="letter" hidden$="{{_compute(sortApha) }}">
                             <a name="{{drivers.firstLetter}}"></a><span>{{drivers.firstLetter}}</span></div>
                         <template is=dom-repeat items="{{drivers.drivers}}" as="item" on-click="viewDriverInfo" id="driversList">
                          <driver-card id="{{item.driverId}}" data="{{item}}" on-click='_view'></driver-card>
@@ -197,6 +210,7 @@
             <driver-profile driver-data="[[selected]]"></driver-profile>
 
         </div> -->
+
         <iron-media-query query="(min-width: 601px)" query-matches="{{_isMobile}}"></iron-media-query>
         <iron-media-query query="(min-width: 1280px)" query-matches="{{_isMobile}}"></iron-media-query>
     </template>
@@ -216,7 +230,7 @@
             search: {
                 type: String,
                 notify: true,
-                observer: '_filterSearch',
+                 observer: '_filterSearch',
                 value: ''
             },
             header: {
@@ -237,8 +251,19 @@
 
             resultBy: {
                 type: String,
-                value: 'Last Name',
+                value: function () {
+                 return 'ID';
+                },
                 notify: true
+
+            },
+            recordFound:{
+                type:Number,
+                value:0,
+                 notify:true
+                // observer:'_getRecordFound'
+
+
             },
 
             orderDrivers: {
@@ -271,6 +296,7 @@
 
 
         },
+
         _letterId: function(id) {
             return '_' + id;
         },
@@ -284,6 +310,7 @@
                     if (isMobile) {
                         document.querySelector(id).style.display = 'none';
                     } else {
+
                         document.querySelector(id).style.display = 'flex';
                     }
 
@@ -295,14 +322,22 @@
         },
 
         _urlForItem: function(i) {
-
             return '#' + i;
         },
         _compute: function() {
-            if (this.sortApha) {
+
+
+            if(this.search !=='' && this.sortApha){
+            this.search='';
+
+        }
+            if (this.sortApha  ) {
                 this._isMobileChanged(true);
+
+
             }
-            return !this.sortApha;
+
+                return (!this.sortApha);
 
 
         },
@@ -314,40 +349,57 @@
         },
 
         _filterSearch: function() {
+        //    console.log('search changed' + this.search);
+            if(this.search !==''){
             this.sortApha = false;
+        }
             var id = '',
                 i = 0;
 
-            if (this.resultBy === 'Last Name') {
-                for (i = 0; i < this.driversData.length; i++) {
-                    if (this.driversData[i].firstName.indexOf(this.search.toUpperCase()) === -1) {
-                        id = this.driversData[i].driverId;
-                        // console.log(id);
-                        document.getElementById(id).style.display = 'none';
+                this.recordFound=0;
+        for (i = 0; i < this.driversData.length; i++) {
+            id = this.driversData[i].driverId;
+
+            if(this.resultBy === 'First Name'){
+
+                if (this.driversData[i].firstName.indexOf(this.search.toUpperCase()) === -1) {
+
+
+                            document.getElementById(id).style.display = 'none';
+                        this.recordFound++;
+                        }
+                        else{
+
+                            document.getElementById(id).style.display = 'flex';
+
+
+                        }
+
                     }
-                }
-            } else if (this.resultBy === 'Group') {
-                for (i = 0; i < this.driversData.length; i++) {
-                    if (this.driversData[i].Group !== this.search.toUpperCase()) {
-                        id = this.driversData[i].driverId;
-                        document.getElementById(id).style.display = 'none';
+
+
+                 if (this.resultBy === 'ID') {
+
+                                    if (this.driversData[i].driverId.indexOf(this.search.toUpperCase()) === -1) {
+
+                                        document.getElementById(id).style.display = 'none';
+                                    this.recordFound++;
+
+                                    }
+                                    else{
+                                        document.getElementById(id).style.display = 'flex';
+
+                                    }
+                                    // console.log(this.recordFound);
+
                     }
-                }
-
-            }
-
-            if (this.search === '') {
-                for (i = 0; i < this.driversData.length; i++) {
-                    if (this.driversData[i].firstName.indexOf(this.search.toUpperCase()) > -1) {
-                        id = this.driversData[i].driverId;
-                        //   console.log(id);
-                        document.getElementById(id).style.display = 'flex';
-                    }
-                }
-            }
 
 
 
+
+        }
+
+        this.recordFound = this.driversData.length - this.recordFound;
 
         },
 
@@ -400,7 +452,7 @@
             //  this.$.searchBar.style.display = 'none';
 
             this.sortApha = false;
-
+            // this.recordFound=0;
 
 
 
@@ -446,7 +498,8 @@
 
             }
             // this.set('driversData',this.orderDrivers);
-
+            // this.recordFound = 0;
+            this.recordFound = this.driversData.length - this.recordFound;
         }
 
 

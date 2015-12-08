@@ -5,7 +5,8 @@ var ipc = require('ipc');
 // var settingsWindow;
 //loading the drives list
 window.addEventListener('WebComponentsReady', function() {
-  var dbPath = 'T:/TDSM_Wdistech/dbf';
+  // var dbPath = 'T:/TDSM_Wdistech/dbf';
+  var dbPath = 'C:/TDSM_W/dbf';
   DriversApi.loadDrivers(dbPath);
 
 });

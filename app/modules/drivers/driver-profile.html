@@ -349,7 +349,7 @@
                         <paper-item>
                             <paper-item-body two-line>
                                 <div class="header">Country</div>
-                                <div secondary>Canada</div>
+                                <div secondary>{{_country(driverData.homeTerminal)}}</div>
                             </paper-item-body>
                         </paper-item>
 
@@ -418,9 +418,16 @@
                 type:Boolean,
                 value:function () {
                   return true;
-                }
+              }
 
-            }
+
+          },
+           country:{
+               type: String,
+               notify: true,
+               observer:'_country'
+           }
+
             /*,
                         animationConfig: {
                             value: function() {
@@ -442,6 +449,17 @@
                                 };
                             }
                         }*/
+
+        },
+
+        _country:function (item) {
+            var retval =''
+            if(item === 'CDN'){
+            retval='CANADA';}
+            else if (item === 'USA') {
+                retval='USA';
+            }
+            return retval;
 
         },
         edit:function(){
