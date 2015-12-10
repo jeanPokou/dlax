@@ -34,7 +34,7 @@
         <div main >
             <!-- <img src="{{data.avatar}}" alt=""> -->
             <iron-image   class="avatar" placeholder="avatar.jpg"
-sizing="cover" preload src="{{data.avatar}}"></iron-image>
+sizing="cover" preload src="[[data.avatar]]"></iron-image>
             <div info>
                 <span class="name">{{data.firstName}}</span>
                 <span>{{data.driverId}}</span>
@@ -47,6 +47,7 @@ sizing="cover" preload src="{{data.avatar}}"></iron-image>
         is: 'driver-card',
         properties: {
             data: Object
+            
                 /*avatar: String,
                 name: String*/
                 //, animationConfig: {

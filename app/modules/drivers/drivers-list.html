@@ -182,6 +182,7 @@
                             <a name="{{drivers.firstLetter}}"></a><span>{{drivers.firstLetter}}</span></div>
                         <template is=dom-repeat items="{{drivers.drivers}}" as="item" on-click="viewDriverInfo" id="driversList">
                          <driver-card id="{{item.driverId}}" data="{{item}}" on-click='_view'></driver-card>
+
                         </template>
                     </template>
                     <!-- <template is="dom-repeat" items="{{driversData}}" as ='drivers'>
@@ -274,6 +275,7 @@
                 value: function() {
                     return [];
                 }
+
             },
 
             sortApha: {
@@ -422,7 +424,7 @@
         _handleResponse: function() {
             this._orderAphabetical();
             //
-            // console.log(e.detail.response);
+            console.log('data changed');
         },
 
         showSearch: function() {
@@ -470,6 +472,7 @@
                 bahaviors: [Polymer.NeonSharedElementAnimatableBehavior]*/
 
         _orderAphabetical: function() {
+            this.set('orderDrivers',[]);
 
             this.driversData.sort(function(a, b) {
 

@@ -346,7 +346,7 @@
                                 <div class="header">Zip Code</div>
                                 <div secondary>{{driverData.postCode}}</div>
                             </paper-item-body>
-             <gold-zip-input required auto-validate error-message="Please enter a valid zip code" label="Zip Code" value={{driverData.postCode}} hidden$="{{isEditable}}"></gold-zip-input>
+                <paper-input label="Zip Code" hidden$="{{isEditable}}" value={{driverData.postCode}}></paper-input>
                         </paper-item>
                         <paper-item>
                             <paper-item-body two-line hidden$="{{!isEditable}}">
@@ -422,8 +422,9 @@
         is: 'driver-profile',
         properties: {
             driverData: {
-                type: Array,
+                type: Object,
                 notify: true
+
 
 
             },
@@ -464,6 +465,10 @@
                         }*/
 
         },
+            observers:['driverDataChanged(driverData.*,0)'],
+        driverDataChanged:function (data,index) {
+
+        },
 
 
         _country:function (item) {
@@ -483,15 +488,15 @@
         _save :function(){
                 DriversApi.editDriver(this.driverData.driverId, this.driverData);
                 this.isEditable=!this.isEditable;
-                document.querySelector('#toastUpdated').open()
-                // Polymer.dom(this).parentNode.parentNode.set('driverData.*',this.driverData);
+                var l= document.querySelector('drivers-list');
+                console.log(l.selectedIndex);
+                var path='driversData.'+ l.selectedIndex;
+                // console.log(path);
+                 console.log(this.driverData);
+                l.set('',this.driverData);
+                l._orderAphabetical();
+                document.querySelector('#toastUpdated').open();
 
-                // DriversApi.loadDrivers(DriversApi.dbPath);
-                // var _x=Polymer.dom(this).parentNode.parentNode;
-                // console.log(_x.$.driversList);
-                // _x.$.driversList.splice('driversData',this.driverData,_x.$.driversList.selectedDriverIndex);
-                //     _x.$.driversList.set('driversData',[]);
-                //     // _x.$.driversList.set('orderDrivers',[]);
 
         },
 

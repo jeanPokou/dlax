@@ -148,7 +148,9 @@
 
         },
         _getSelectedDriver:function (data,index) {
+        //    console.log(data.base);
             return data.base[index];
+
         },
         _onSelectedChange: function(s) {
 
@@ -160,7 +162,7 @@
         },
         _addDriver: function() {
             this.selected = 'addDriver';
-            // this.$.addDialog.open();
+
         },
 
         ready: function() {

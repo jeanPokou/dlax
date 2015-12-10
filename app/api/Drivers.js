@@ -11,7 +11,7 @@ function  DriversApi() {
   events.call(this);
   this.driversList = [] ;
   // 'T:/TDSM_Wdistech/dbf';
-  this.dbPath = 'c:/tdsm_w/dbf/driver.dbf~';
+  this.dbPath = 'c:/tdsm_W/dbf/driver.dbf~';
 
 }
 util.inherits(DriversApi,events);
@@ -69,9 +69,9 @@ DriversApi.prototype.editDriver = function(id, data) {
   arr.push(data);
   console.log(JSON.stringify(arr));
   if (util.isArray(arr)) {
-    console.log('in edit');
+    // console.log('in edit');
     var args = this.dbPath + 'editDrivers~' + id + '~' +  JSON.stringify(arr) + '\n';
-    console.log(args);
+    // console.log(args);
     apiExe.stdin.write(args);
 
     // apiExe.stdin.write('c:/tdsm_w/dbf/driver.dbf~editDrivers~0324~[{"firstName":"pokou"}]\n');
