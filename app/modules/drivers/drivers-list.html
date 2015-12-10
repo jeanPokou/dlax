@@ -157,9 +157,8 @@
                     <paper-input id='searchBar' label="Search" class="search" type="search" value="{{search}}" change="_filterSearch"></paper-input>
                 </div>
                 <paper-dropdown-menu label='By' selected-item-label="{{resultBy}}">
-                    <paper-menu class="dropdown-content" selected='3'>
-                        <paper-item>Group</paper-item>
-                        <paper-item>Terminal</paper-item>
+                    <paper-menu class="dropdown-content" selected='1'>
+
                         <paper-item>First Name</paper-item>
                         <paper-item>ID</paper-item>
                     </paper-menu>
@@ -238,10 +237,12 @@
                 value: 'DRIVERS'
             },
 
-            selectedDriver: {
-                type: Array,
-                value: []
+            selectedIndex: {
+                    type:Number,
+                    notify:true
             },
+
+
             searchBarHidden: {
                 type: Boolean,
                 value: function() {
@@ -254,7 +255,8 @@
                 value: function () {
                  return 'ID';
                 },
-                notify: true
+                notify: true,
+                observer:'_resetSerch'
 
             },
             recordFound:{
@@ -295,6 +297,10 @@
 
 
 
+        },
+        _resetSerch:function () {
+        this.search='';
+        this._filterSearch();
         },
 
         _letterId: function(id) {
@@ -437,9 +443,12 @@
                };
                console.log(this.sharedElements.card);*/
             // // toggleSelection
-            console.log(e.model.item);
+
             // var item = this.$.driversList.itemForElement(e.target);
-            this.set('selectedDriver', e.model.item);
+            // this.set('selectedDriver', e.model.item);
+
+             this.selectedIndex = this.driversData.indexOf(e.model.item);
+            // console.log(this.selectedDriverIndex);
             Polymer.dom(this).parentNode.selected = 'driverProfile';
 
 

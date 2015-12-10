@@ -199,6 +199,7 @@
             color: black;
         }
         </style>
+
         <div main layout vertical id="tt">
             <paper-toolbar>
                 <paper-icon-button icon="arrow-back" on-click="back"></paper-icon-button>
@@ -243,12 +244,12 @@
                         <div class="layout vertical center">
                             <span class="fullName">{{driverData.firstName}} {{driverData.lName}}</span>
                             <span class="comanyID">{{driverData.driverId}}</span>
-                            <paper-icon-item>
+                            <!-- <paper-icon-item>
                                 <iron-icon icon="communication:phone"></iron-icon> <span>{{driverData.Phone}}</span>
                             </paper-icon-item>
                             <paper-icon-item>
                                 <iron-icon icon="communication:email"> </iron-icon> <span>{{driverData.email}}</span>
-                            </paper-icon-item>
+                            </paper-icon-item> -->
                         </div>
                         <div class="layout vertical center flex-1">
                             <!-- <span>LTD Miles :152</span>
@@ -306,51 +307,60 @@
                 <div class="layout horizontal center">
                     <h2>Personal informations</h2>
                     <span class="flex"></span>
-                    <paper-icon-button icon="editor:mode-edit" on-click="edit"></paper-icon-button>
+                    <paper-icon-button icon="editor:mode-edit" on-click="_edit"  hidden$="{{!isEditable}}"></paper-icon-button>
+                    <paper-icon-button icon="mdi:content-save" on-click="_save"  hidden$="{{isEditable}}"></paper-icon-button>
+                    <paper-icon-button icon="mdi:pencil-off" on-click="_edit"  hidden$="{{isEditable}}"></paper-icon-button>
                 </div>
                 <div details>
                     <div class="layout vertical flex">
                         <paper-item>
-                            <paper-item-body two-line class="layout vertical">
+                            <paper-item-body two-line class="layout vertical" hidden$="{{!isEditable}}">
                                 <div class='header'>First Name</div>
                                 <div secondary>{{driverData.firstName}}</div>
                             </paper-item-body>
+                                <paper-input label="First Name" hidden$="{{isEditable}}" value={{driverData.firstName}}></paper-input>
                         </paper-item>
                         <paper-item>
-                            <paper-item-body two-line>
+                            <paper-item-body two-line  hidden$="{{!isEditable}}">
                                 <div class="header">Date Of Birth</div>
                                 <div secondary>{{driverData.dob}}</div>
                             </paper-item-body>
+                            <paper-input   label="Date of Birth" hidden$="{{isEditable}}" value={{driverData.dob}}></paper-input>
                         </paper-item>
                         <paper-item>
-                            <paper-item-body two-line>
+                            <paper-item-body two-line  hidden$="{{!isEditable}}">
                                 <div class="header">City</div>
                                 <div secondary>{{driverData.city}}</div>
                             </paper-item-body>
+                            <paper-input label="City" hidden$="{{isEditable}}" value={{driverData.city}}></paper-input>
                         </paper-item>
                         <paper-item>
-                            <paper-item-body two-line>
+                            <paper-item-body two-line hidden$="{{!isEditable}}" >
                                 <div class="header">Street</div>
                                 <div secondary>{{driverData.address}}</div>
                             </paper-item-body>
+                            <paper-input label="Address" hidden$="{{isEditable}}" value={{driverData.address}}></paper-input>
                         </paper-item>
                         <paper-item>
-                            <paper-item-body two-line>
+                            <paper-item-body two-line hidden$="{{!isEditable}}">
                                 <div class="header">Zip Code</div>
                                 <div secondary>{{driverData.postCode}}</div>
                             </paper-item-body>
+             <gold-zip-input required auto-validate error-message="Please enter a valid zip code" label="Zip Code" value={{driverData.postCode}} hidden$="{{isEditable}}"></gold-zip-input>
                         </paper-item>
                         <paper-item>
-                            <paper-item-body two-line>
+                            <paper-item-body two-line hidden$="{{!isEditable}}">
                                 <div class="header">Province</div>
                                 <div secondary>{{driverData.prov}}</div>
                             </paper-item-body>
+                                <paper-input label="Province" hidden$="{{isEditable}}" value={{driverData.prov}}></paper-input>
                         </paper-item>
                         <paper-item>
-                            <paper-item-body two-line>
+                            <paper-item-body two-line  hidden$="{{!isEditable}}" >
                                 <div class="header">Country</div>
                                 <div secondary>{{_country(driverData.homeTerminal)}}</div>
                             </paper-item-body>
+                                <paper-input label="Country" hidden$="{{isEditable}}" value={{_country(driverData.homeTerminal)}}></paper-input>
                         </paper-item>
 
                     </div>
@@ -370,10 +380,11 @@
                             <paper-input label="Last Name" hidden$="{{isEditable}}" value={{driverData.lName}}></paper-input>
                         </paper-item>
                         <paper-item>
-                            <paper-item-body two-line>
+                            <paper-item-body two-line hidden$="{{!isEditable}}">
                                 <div class="header">SIN</div>
-                                <div secondary>{{driver.SIN}}</div>
+                                <div secondary>{{driverData.SIN}}</div>
                             </paper-item-body>
+                                <paper-input label="SIN" hidden$="{{isEditable}}" value={{driverData.SIN}}></paper-input>
                         </paper-item>
                         <paper-item>
                             <paper-item-body two-line>
@@ -384,7 +395,7 @@
                         <paper-item>
                             <paper-item-body two-line>
                                 <div class="header">Terminal</div>
-                                <div secondary>{{driver.homeTerminal}}</div>
+                                <div secondary>{{driverData.homeTerminal}}</div>
                             </paper-item-body>
                         </paper-item>
                         <paper-item>
@@ -403,21 +414,23 @@
                 </div>
             </div>
         </div>
+        <paper-toast id="toastUpdated" text="Drivers Informations Updated" ></paper-toast>
     </template>
-    </template>
+
     <script>
     Polymer({
         is: 'driver-profile',
         properties: {
             driverData: {
-                type: Object,
+                type: Array,
                 notify: true
+
 
             },
             isEditable:{
                 type:Boolean,
                 value:function () {
-                  return true;
+                  return false;
               }
 
 
@@ -452,6 +465,7 @@
 
         },
 
+
         _country:function (item) {
             var retval =''
             if(item === 'CDN'){
@@ -462,8 +476,23 @@
             return retval;
 
         },
-        edit:function(){
+        _edit:function(){
                 this.isEditable = !this.isEditable;
+
+        },
+        _save :function(){
+                DriversApi.editDriver(this.driverData.driverId, this.driverData);
+                this.isEditable=!this.isEditable;
+                document.querySelector('#toastUpdated').open()
+                // Polymer.dom(this).parentNode.parentNode.set('driverData.*',this.driverData);
+
+                // DriversApi.loadDrivers(DriversApi.dbPath);
+                // var _x=Polymer.dom(this).parentNode.parentNode;
+                // console.log(_x.$.driversList);
+                // _x.$.driversList.splice('driversData',this.driverData,_x.$.driversList.selectedDriverIndex);
+                //     _x.$.driversList.set('driversData',[]);
+                //     // _x.$.driversList.set('orderDrivers',[]);
+
         },
 
         ready: function() {

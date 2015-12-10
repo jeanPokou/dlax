@@ -1,15 +1,21 @@
 var DriversApi = require('./api/Drivers');
 
-var ipc = require('ipc');
+// var ipc = require('ipc');
 
 // var settingsWindow;
 //loading the drives list
 window.addEventListener('WebComponentsReady', function() {
-  // var dbPath = 'T:/TDSM_Wdistech/dbf';
-  var dbPath = 'C:/TDSM_W/dbf';
-  DriversApi.loadDrivers(dbPath);
+
+  DriversApi.loadDrivers(DriversApi.dbPath);
+  // var app = document.querySelector('#neonApp');
 
 });
+ // var app = document.querySelector('#app');
+ //    app.selected = 0;
+ //    app.next = function() {
+ //        app.selected = 0;
+ //
+ //    };
 
 // // document.getElementById('platform-info').innerHTML = os.platform();
 // // document.getElementById('env-name').innerHTML = envName;
