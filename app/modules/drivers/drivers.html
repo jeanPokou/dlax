@@ -95,7 +95,7 @@
             <drivers-dash data-route="driversDash"></drivers-dash>
             <drivers-list id="driversList" data-route='driversList' drivers-data="{{driversData}}" selected-index={{selectedDriverIndex}}></drivers-list>
             <driver-profile id="driverProfile" data-route='driverProfile' driver-data="{{_getSelectedDriver(driversData.*,selectedDriverIndex)}}"></driver-profile>
-            <add-driver data-route="addDriver"></add-driver>
+            <add-driver data-route="addDriver" driver-data="{{_getSelectedDriver(driversData.*,selectedDriverIndex)}}"></add-driver>
             <driver-documents data-route="driverDocuments" data={{_getSelectedDriver(driversData.*,selectedDriverIndex)}}></driver-documents>
         </neon-animated-pages>
         <paper-fab icon="mdi:account-plus" hidden$='{{_compute(selected)}}' class="fab-action" elevation="3" on-click="_addDriver"></paper-fab>

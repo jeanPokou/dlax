@@ -10,7 +10,7 @@ var apiExe = spawn(__dirname + '/dataLayer/dataRequestModule.exe',
 function  DriversApi() {
   events.call(this);
   this.driversList = [] ;
-  // 'T:/TDSM_Wdistech/dbf';
+  //  this.dbPath = 't:/TDSM_Wdistech/dbf/driver.dbf~';
   this.dbPath = 'c:/tdsm_W/dbf/driver.dbf~';
 
 }
@@ -67,7 +67,7 @@ DriversApi.prototype.greet = function() {
 DriversApi.prototype.editDriver = function(id, data) {
   var arr = [];
   arr.push(data);
-  console.log(JSON.stringify(arr));
+  // console.log(JSON.stringify(arr));
   if (util.isArray(arr)) {
     // console.log('in edit');
     var args = this.dbPath + 'editDrivers~' + id + '~' +  JSON.stringify(arr) + '\n';

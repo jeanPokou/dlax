@@ -157,7 +157,7 @@
                     <paper-input id='searchBar' label="Search" class="search" type="search" value="{{search}}" change="_filterSearch"></paper-input>
                 </div>
                 <paper-dropdown-menu label='By' selected-item-label="{{resultBy}}">
-                    <paper-menu class="dropdown-content" selected='1'>
+                    <paper-menu class="dropdown-content" selected='0'>
 
                         <paper-item>First Name</paper-item>
                         <paper-item>ID</paper-item>
@@ -178,10 +178,17 @@
                 <!-- <iron-ajax auto url="../../drivers.json" handle-as="json" last-response="{{driversData}}" on-response="_handleResponse"></iron-ajax> -->
                 <div class="layout horizontal center wrap flex ">
                     <template is="dom-repeat" items="{{orderDrivers}}" as='drivers'>
-                        <div class="letter" hidden$="{{_compute(sortApha) }}">
-                            <a name="{{drivers.firstLetter}}"></a><span>{{drivers.firstLetter}}</span></div>
-                        <template is=dom-repeat items="{{drivers.drivers}}" as="item" on-click="viewDriverInfo" id="driversList">
-                         <driver-card id="{{item.driverId}}" data="{{item}}" on-click='_view'></driver-card>
+                        <!-- <div class="letter" hidden$="{{_compute(sortApha) }}">
+                            <a name="{{drivers.firstLetter}}"></a><span>{{drivers.firstLetter}}</span></div> -->
+
+                            <div class="letter" hidden$="{{_compute(sortApha) }}">
+                                <a name="{{arrayItem(drivers.*,index,'firstLetter')}}"></a><span>{{drivers.firstLetter}}</span></div>
+
+
+                        <template is="dom-repeat" items="{{drivers.drivers}}" as="item"  id="driversList">
+
+
+                     <driver-card id="{{item.driverId}}" card-data="{{item}}" on-click='_view'></driver-card>
 
                         </template>
                     </template>
@@ -199,17 +206,7 @@
                 </div>
             </div>
         </div>
-        <!--   <array-selector id="selector" items="{{driversData}}" selected="{{selected}}" multi></array-selector> -->
-        <!--   <div main id="viewDriver">
-            <paper-toolbar>
-                <span>{{header}}</span>
-                <span class="flex"></span>
-                <iron-icon icon="arrow-back" on-click="viewDrivers"></iron-icon>
-            </paper-toolbar>
 
-            <driver-profile driver-data="[[selected]]"></driver-profile>
-
-        </div> -->
 
         <iron-media-query query="(min-width: 601px)" query-matches="{{_isMobile}}"></iron-media-query>
         <iron-media-query query="(min-width: 1280px)" query-matches="{{_isMobile}}"></iron-media-query>
@@ -224,7 +221,7 @@
                 value: function() {
                     return [];
                 },
-                observer:'_handleResponse'
+                 observer:'_handleResponse'
 
             },
             search: {
@@ -299,6 +296,13 @@
 
 
 
+        },
+        computeCardData:function (change,index) {
+            return change.base[index]
+        },
+        arrayItem:function(change,index,path){
+        //    console.log(index);
+        return this.get(path,change.base[index])
         },
         _resetSerch:function () {
         this.search='';
@@ -422,9 +426,11 @@
 
         },
         _handleResponse: function() {
+            // this.set('orderDrivers',[]);
+            // this.orderDrivers=[];
             this._orderAphabetical();
             //
-            console.log('data changed');
+            console.log('data changed handle response');
         },
 
         showSearch: function() {

@@ -9,6 +9,7 @@
             --paper-badge-width: 42px;
             --paper-badge-height: 42px;
             position: relative;
+                --paper-fab-background: var(--paper-blue-600);
       height: calc(80% - 10px);
       top: 10px;
       margin-bottom: 10px;
@@ -35,6 +36,14 @@
             border-radius: 50%;
             margin-bottom: 10px;
         }
+         .cameraAvatar {
+           width: 90px;
+           height: 90px;
+           border-radius: 50%;
+           margin-bottom: 10px;
+           background-color: #ccc;
+           text-align: center;
+         }
 
         .rating {
             border-radius: 50%;
@@ -42,9 +51,12 @@
             height: 50px;
             background-color: #ccc;
             font-size: 0.9em;
-            /*  margin-right: 30px;
-           margin-top: 2px;
-            float: right; */
+    
+        }
+        paper-fab{
+                    /*position: relative;
+                    bottom: 20px;
+                    left: 90%;*/
         }
 
         .missingsLog {
@@ -56,6 +68,9 @@
           margin-top: 110px;
           margin-right: -50px; */
             font-size: 0.9em;
+        }
+        .camera {
+          margin-top: 25px;
         }
 
         [vcard] {
@@ -74,7 +89,8 @@
             @apply(--layout-center-center);
             /*   border: 1px solid green;*/
             height: 180px;
-            color: white;
+            color: black;
+            background-color:var(--paper-grey-300);
         }
 
         .fullName {
@@ -214,8 +230,13 @@
                 <div dash>
                     <div class="layout vertical flex center">
                         <div class="layout horizontal center">
-                                <iron-image   class="avatar" placeholder="avatar.jpg"
+                                <iron-image  hidden$="{{!isEditable}}"  class="avatar" placeholder="avatar.jpg"
                     sizing="cover" preload src="{{driverData.avatar}}"></iron-image>
+                     <div class="layout horizontal center" hidden$="{{isEditable}}">
+                       <div class="cameraAvatar">
+                         <paper-icon-button icon="mdi:camera" class="camera"></paper-icon-button>
+                       </div>
+                     </div>
 
                             <paper-badge label="-183"></paper-badge>
                         </div>
@@ -250,6 +271,11 @@
                             <paper-icon-item>
                                 <iron-icon icon="communication:email"> </iron-icon> <span>{{driverData.email}}</span>
                             </paper-icon-item> -->
+                        <span hidden$="{{!isEditable}}">{{_computeLanguage(driverData.language)}}</span>
+                        <paper-radio-group selected="English" hidden$="{{isEditable}}">
+                          <paper-radio-button name="English">English</paper-radio-button>
+                          <paper-radio-button name="French">French</paper-radio-button>
+                        </paper-radio-group>
                         </div>
                         <div class="layout vertical center flex-1">
                             <!-- <span>LTD Miles :152</span>
@@ -265,7 +291,7 @@
                 </div>
             </div>
 
-            <div stat>
+            <div stat style="display:none">
 
               <div class="layout vertical flex center">
                 <div class="layout horizontal flex center">
@@ -307,9 +333,9 @@
                 <div class="layout horizontal center">
                     <h2>Personal informations</h2>
                     <span class="flex"></span>
-                    <paper-icon-button icon="editor:mode-edit" on-click="_edit"  hidden$="{{!isEditable}}"></paper-icon-button>
-                    <paper-icon-button icon="mdi:content-save" on-click="_save"  hidden$="{{isEditable}}"></paper-icon-button>
-                    <paper-icon-button icon="mdi:pencil-off" on-click="_edit"  hidden$="{{isEditable}}"></paper-icon-button>
+                    <paper-fab  icon="mdi:content-save"  on-click="_save"  hidden$="{{isEditable}}"></paper-fab>
+                    <paper-fab  mini icon="editor:mode-edit" on-click="_edit"  hidden$="{{!isEditable}}"></paper-fab>
+                    <paper-fab mini icon="mdi:pencil-off" on-click="_edit"  hidden$="{{isEditable}}"></paper-fab>
                 </div>
                 <div details>
                     <div class="layout vertical flex">
@@ -317,15 +343,16 @@
                             <paper-item-body two-line class="layout vertical" hidden$="{{!isEditable}}">
                                 <div class='header'>First Name</div>
                                 <div secondary>{{driverData.firstName}}</div>
+
                             </paper-item-body>
                                 <paper-input label="First Name" hidden$="{{isEditable}}" value={{driverData.firstName}}></paper-input>
                         </paper-item>
                         <paper-item>
                             <paper-item-body two-line  hidden$="{{!isEditable}}">
                                 <div class="header">Date Of Birth</div>
-                                <div secondary>{{driverData.dob}}</div>
+                                <div secondary>{{_computeDate(driverData.dob)}}</div>
                             </paper-item-body>
-                            <paper-input   label="Date of Birth" hidden$="{{isEditable}}" value={{driverData.dob}}></paper-input>
+                            <paper-input   label="Date of Birth" hidden$="{{isEditable}}" value={{_computeDate(driverData.dob)}}></paper-input>
                         </paper-item>
                         <paper-item>
                             <paper-item-body two-line  hidden$="{{!isEditable}}">
@@ -364,11 +391,13 @@
                         </paper-item>
 
                     </div>
+
+
                     <div class="layout vertical flex">
                       <paper-item>
                           <paper-item-body two-line>
                               <div class="header">Time Zone</div>
-                              <div secondary>Eastern Time</div>
+                              <div secondary>{{driverData.Ftime}}</div>
                           </paper-item-body>
                       </paper-item>
                         <paper-item>
@@ -387,30 +416,86 @@
                                 <paper-input label="SIN" hidden$="{{isEditable}}" value={{driverData.SIN}}></paper-input>
                         </paper-item>
                         <paper-item>
-                            <paper-item-body two-line>
+                            <paper-item-body two-line hidden$="{{!isEditable}}">
                                 <div class="header">Date of Employment</div>
-                                <div secondary>05/05/2012</div>
+                                <div secondary></div>
                             </paper-item-body>
+                            <paper-input label="Date of Employment" type="text" hidden$="{{isEditable}}"></paper-input>
                         </paper-item>
                         <paper-item>
-                            <paper-item-body two-line>
+                            <paper-item-body two-line hidden$="{{!isEditable}}">
                                 <div class="header">Terminal</div>
-                                <div secondary>{{driverData.homeTerminal}}</div>
+                                <div secondary>{{driverData.terminal}}</div>
                             </paper-item-body>
+                            <paper-input label="Terminal" type="text" hidden$="{{isEditable}}" value="{{driverData.terminal}}"></paper-input>
                         </paper-item>
                         <paper-item>
-                            <paper-item-body two-line>
-                                <div class="header">Unit</div>
-                                <div secondary>1735</div>
+                            <paper-item-body two-line hidden$="{{!isEditable}}">
+                                <div class="header">Group</div>
+                                <div secondary></div>
                             </paper-item-body>
+                                <paper-input label="Group" type="text" hidden$="{{isEditable}}"></paper-input>
                         </paper-item>
                         <paper-item>
-                            <paper-item-body two-line>
-                                <div class="header">Language</div>
-                                <div secondary>English</div>
+                            <paper-item-body two-line hidden$="{{!isEditable}}">
+                                <div class="header">Email</div>
+                                <div secondary></div>
                             </paper-item-body>
+                            <paper-input label="Email" hidden$="{{isEditable}}"></paper-input>
                         </paper-item>
                     </div>
+
+                        <div class="layout flex vertical">
+                            <paper-checkbox style=" margin-bottom:10px;margin-left:10px;"  disabled$="{{isEditable}}" checked>Agricultural Certified</paper-checkbox>
+                                <paper-item>
+                                    <paper-item-body two-line hidden$="{{!isEditable}}">
+                                        <div class="header"> Emmergency Contact</div>
+                                        <div secondary>{{driverData.Phone1}}</div>
+                                    </paper-item-body>
+                                        <paper-input label="Emmergency Contact" type="text" hidden$="{{isEditable}}"></paper-input>
+                                </paper-item>
+                            <paper-item>
+                                <paper-item-body two-line hidden$="{{!isEditable}}">
+                                    <div class="header">Emmergency Phone</div>
+                                    <div secondary>{{driverData.Phone1}}</div>
+                                </paper-item-body>
+                                <paper-input label="Emmergency Phone" type="text" hidden$="{{isEditable}}"></paper-input>
+                            </paper-item>
+                            <paper-item>
+                                <paper-item-body two-line hidden$="{{!isEditable}}">
+                                    <div class="header"> Unit</div>
+                                    <div secondary></div>
+                                </paper-item-body>
+                                    <paper-input label="Unit#" type="number" hidden$="{{isEditable}}"></paper-input>
+                            </paper-item>
+                                <paper-item>
+                                    <paper-item-body two-line  hidden$="{{!isEditable}}">
+                                        <div class="header">Termination Date</div>
+                                        <div secondary></div>
+                                    </paper-item-body>
+                                    <paper-input label="Termination Date" type="text" hidden$="{{isEditable}}"></paper-input>
+                                </paper-item>
+                                    <paper-item>
+                                        <paper-item-body two-line hidden$="{{!isEditable}}">
+                                            <div class="header">Home Terminal</div>
+                                            <div secondary>{{driverData.homeTerminal}}</div>
+                                        </paper-item-body>
+                                            <paper-input label="Home Terminal" type="text" hidden$="{{isEditable}}"></paper-input>
+                                    </paper-item>
+                                        <paper-item>
+                                            <paper-item-body two-line  hidden$="{{!isEditable}}">
+                                                <div class="header">Single</div>
+                                                <div secondary></div>
+                                            </paper-item-body>
+                                                <paper-input label="Single" type="text" hidden$="{{isEditable}}"></paper-input>
+                                        </paper-item>
+
+
+                            <!-- <paper-checkbox style="    margin-top: 25px;margin-left: -23px;" checked>Agricultural Certified</paper-checkbox>
+                            <paper-input label="Terminal" type="text"></paper-input>
+                            <paper-input label="Unit#" type="number"></paper-input>
+                            <paper-input label="Single" type="text"></paper-input> -->
+                        </div>
                 </div>
             </div>
         </div>
@@ -422,10 +507,7 @@
         is: 'driver-profile',
         properties: {
             driverData: {
-                type: Object,
-                notify: true
-
-
+                type: Object
 
             },
             isEditable:{
@@ -464,12 +546,19 @@
                             }
                         }*/
 
+         },
+        _computeDate:function (date) {
+            if(date === '' || date ==='  /  /  ')
+            return '';
         },
-            observers:['driverDataChanged(driverData.*,0)'],
-        driverDataChanged:function (data,index) {
-
+        _computeLanguage: function (lan) {
+            if(lan==='2'){
+                return '(French)';
+            }
+            else{
+                return '(English)'
+            }
         },
-
 
         _country:function (item) {
             var retval =''
@@ -489,12 +578,12 @@
                 DriversApi.editDriver(this.driverData.driverId, this.driverData);
                 this.isEditable=!this.isEditable;
                 var l= document.querySelector('drivers-list');
-                console.log(l.selectedIndex);
+                var c= document.querySelectorAll('driver-card')[l.selectedIndex];
                 var path='driversData.'+ l.selectedIndex;
-                // console.log(path);
-                 console.log(this.driverData);
-                l.set('',this.driverData);
-                l._orderAphabetical();
+                l.set(path,this.driverData);
+                var temp=c.cardData;
+                c.notifyPath('cardData',[]);
+                c.notifyPath('cardData',temp);
                 document.querySelector('#toastUpdated').open();
 
 

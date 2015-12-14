@@ -106,7 +106,7 @@
         <div info>
           <div class="layout vertical center">
             <paper-icon-item class="id">
-              <iron-icon icon="mdi:account"></iron-icon>{{driverID}}</paper-icon-item>
+              <iron-icon icon="mdi:account"></iron-icon>{{driverData.driverId}}</paper-icon-item>
             <paper-input label="Phone">
               <iron-icon icon="mdi:phone" prefix></iron-icon>
             </paper-input>
@@ -188,12 +188,16 @@
     Polymer({
       is: 'add-driver',
       properties: {
-        driverID: {
-          type: Number,
-          value: 123,
-          notify: true
-        }
-      },
+        driverData: {
+            type: Object
+
+        },
+        isEditable:{
+            type:Boolean,
+            value:function () {
+              return false;
+          }
+      }},
       listeners: {
         ontap: 'back'
 
