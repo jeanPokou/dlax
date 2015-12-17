@@ -225,6 +225,7 @@
                  observer:'_handleResponse'
 
             },
+
             search: {
                 type: String,
                 notify: true,
@@ -458,7 +459,15 @@
 
              this.selectedIndex = this.driversData.indexOf(e.model.item);
             // console.log(this.selectedDriverIndex);
-            Polymer.dom(this).parentNode.selected = 'driverProfile';
+             var neonAP=Polymer.dom(this).parentNode
+            neonAP.selected = 'driverProfile';
+            DriversApi.getMissingLogs(e.model.item.driverId);
+            // console.log(neonAP);
+            // var driverProfile =document.querySelector('#driverProfile');
+            // driverProfile.missingLogsCount=2;
+            // console.log(driverProfile.$.mlogs);
+            //$.mlogs.data.length * (-1);
+            // console.log(e.model.item.driverId);
 
 
         },

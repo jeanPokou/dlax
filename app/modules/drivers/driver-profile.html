@@ -257,7 +257,7 @@
                        </div>
                      </div>
 
-                            <paper-badge label="-183" on-click="viewMissingLogs"></paper-badge>
+                            <paper-badge label="{{missingLogsCount}}" on-click="viewMissingLogs"></paper-badge>
                         </div>
                         <div class="layout horizontal center ">
                             <!--   <div class="rating"></div>
@@ -565,6 +565,12 @@
 
 
           },
+          missingLogsCount:{
+              type:Number,
+              value:function () {
+                  return 0;
+              }
+          },
            country:{
                type: String,
                notify: true,
@@ -614,6 +620,8 @@
          },
          viewMissingLogs :function () {
             this.$.mlogs.show();
+            this.missingLogsCount=this.$.mlogs.data.length * (-1);
+
          },
         _computeDate:function (date) {
             if(date === '' || date ==='  /  /  ')
@@ -660,6 +668,7 @@
         ready: function() {
             //   console.log(this.sharedElements.card);
             this.isEditable=true;
+
         },
         back: function() {
                 this.parentNode.selected = 'driversList';
@@ -668,7 +677,7 @@
             },
             viewDocuments:function(){
               this.parentNode.selected='driverDocuments';
-              console.log('hello');
+
             }
             /*,
                     bahaviors: [Polymer.NeonSharedElementAnimatableBehavior]*/

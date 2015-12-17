@@ -9,9 +9,49 @@ var apiExe = spawn(__dirname + '/dataLayer/dataRequestModule.exe',
 
 function  DriversApi() {
   events.call(this);
-  this.driversList = [] ;
-  //  this.dbPath = 't:/TDSM_Wdistech/dbf/driver.dbf~';
-  this.dbPath = 'c:/tdsm_W/dbf/driver.dbf~';
+  var self = this;
+  self.driversList = [] ;
+  self.dataStreamed = '';
+ // self.dbPath = 't:/tdsm_Wdistech/dbf/driver.dbf~Driver~';
+ self.dbPath = 't:/tdsm_Werb/dbf/driver.dbf~Driver~';
+
+  // listener for spawn  data event
+  apiExe.stdout.on('data',function(data) {
+
+    self.dataStreamed += data.toString('utf-8');
+
+    if (trailingNewline(data.toString('utf-8'))) {
+      var header = self.dataStreamed.split('~')[0];
+      var response = self.dataStreamed.split('~')[1];
+      console.log(response);
+      if (header === 'getDrivers') {
+        self.emit('driversLoaded',response);
+      }
+      if (header === 'getMissingLogs') {
+        console.log('emiting missingsLogs');
+        self.emit('missingsLogLoaded',response);
+      }
+
+    }
+
+  });
+
+  self.on('driversLoaded',function(data) {
+              console.log('in drivers');
+              this.driversList = [];
+              self.driversList = JSON.parse(data.toString('utf-8'));
+              //    console.log(self.driversList);
+              var dl = document.querySelector('drivers-x');
+              resetDriverList(dl);
+              dl.set('driversData',self.driversList);
+
+            });
+
+  self.on('missingsLogLoaded',function(data) {
+      console.log('in missingsLogLoaded');
+      var ml = document.querySelector('#mlogs');
+      ml.set('data',JSON.parse(data.toString('utf-8')));
+    });
 
 }
 util.inherits(DriversApi,events);
@@ -23,41 +63,18 @@ function resetDriverList(dl) {
 
 DriversApi.prototype.loadDrivers = function(path) {
   // return if path is empty
+  this.dataStreamed = '';
   if (path === '') {
     return ;
   }
 
   if (util.isNullOrUndefined(path)) {
-    path = dbPath + 'getDrivers\n';
+    path = this.dbPath + 'getDrivers\n';
   } else {
     path = path + 'getDrivers\n';
   }
+
   apiExe.stdin.write(path);
-  var self = this;
-  var driversJson = '';
-
-  // listener for spawn  data event
-  apiExe.stdout.on('data',function(data) {
-    driversJson += data.toString('utf-8');
-
-    if (trailingNewline(data.toString('utf-8'))) {
-      self.emit('driversLoaded',driversJson);
-
-    }
-
-  });
-
-  self.on('driversLoaded',function(data) {
-            console.log('in drivers');
-            self.driversList = [];
-            self.driversList = JSON.parse(data.toString('utf-8'));
-            //    console.log(self.driversList);
-            var dl = document.querySelector('drivers-x');
-            resetDriverList(dl);
-            dl.set('driversData',self.driversList);
-
-          });
-
 };
 
 DriversApi.prototype.greet = function() {
@@ -65,6 +82,7 @@ DriversApi.prototype.greet = function() {
 };
 
 DriversApi.prototype.editDriver = function(id, data) {
+  this.dataStreamed = '';
   var arr = [];
   arr.push(data);
   // console.log(JSON.stringify(arr));
@@ -76,6 +94,12 @@ DriversApi.prototype.editDriver = function(id, data) {
 
     // apiExe.stdin.write('c:/tdsm_w/dbf/driver.dbf~editDrivers~0324~[{"firstName":"pokou"}]\n');
   }
+};
+DriversApi.prototype.getMissingLogs = function(id) {
+  this.dataStreamed = '';
+  var  args = this.dbPath + 'getMissingLogs~' + id + '\n';
+  apiExe.stdin.write(args);
+
 };
 
 module.exports = new  DriversApi() ;
