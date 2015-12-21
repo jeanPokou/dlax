@@ -654,19 +654,16 @@
                 DriversApi.editDriver(this.driverData.driverId, this.driverData);
                 this.isEditable=!this.isEditable;
                 var l= document.querySelector('drivers-list');
-                var c= document.querySelectorAll('driver-card')[l.selectedIndex];
-                var path='driversData.'+ l.selectedIndex;
-                l.set(path,this.driverData);
-                var temp=c.cardData;
-                c.notifyPath('cardData',[]);
-                c.notifyPath('cardData',temp);
+                var c= document.getElementById(this.driverData.driverId);
+                 c.set('cardData',[]);
+                 c.set('cardData',this.driverData);
                 document.querySelector('#toastUpdated').open();
 
 
         },
-
         ready: function() {
             //   console.log(this.sharedElements.card);
+        //      DriversApi.getMissingLogs(this.driverData.driverId);
             this.isEditable=true;
 
         },

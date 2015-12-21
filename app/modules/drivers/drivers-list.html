@@ -458,10 +458,11 @@
             // this.set('selectedDriver', e.model.item);
 
              this.selectedIndex = this.driversData.indexOf(e.model.item);
-            // console.log(this.selectedDriverIndex);
+             console.log(this.selectedIndex);
              var neonAP=Polymer.dom(this).parentNode
             neonAP.selected = 'driverProfile';
             DriversApi.getMissingLogs(e.model.item.driverId);
+
             // console.log(neonAP);
             // var driverProfile =document.querySelector('#driverProfile');
             // driverProfile.missingLogsCount=2;

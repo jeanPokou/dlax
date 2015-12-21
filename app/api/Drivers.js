@@ -12,8 +12,8 @@ function  DriversApi() {
   var self = this;
   self.driversList = [] ;
   self.dataStreamed = '';
- // self.dbPath = 't:/tdsm_Wdistech/dbf/driver.dbf~Driver~';
- self.dbPath = 't:/tdsm_Werb/dbf/driver.dbf~Driver~';
+  // self.dbPath = 't:/tdsm_Wdistech/dbf/driver.dbf~Driver~';
+  self.dbPath = 'c:/tdsm_W/dbf/driver.dbf~Driver~';
 
   // listener for spawn  data event
   apiExe.stdout.on('data',function(data) {
@@ -23,7 +23,7 @@ function  DriversApi() {
     if (trailingNewline(data.toString('utf-8'))) {
       var header = self.dataStreamed.split('~')[0];
       var response = self.dataStreamed.split('~')[1];
-      console.log(response);
+       console.log(response);
       if (header === 'getDrivers') {
         self.emit('driversLoaded',response);
       }
@@ -49,8 +49,15 @@ function  DriversApi() {
 
   self.on('missingsLogLoaded',function(data) {
       console.log('in missingsLogLoaded');
-      var ml = document.querySelector('#mlogs');
-      ml.set('data',JSON.parse(data.toString('utf-8')));
+      var dl = document.querySelector('driver-profile');
+      console.log(dl);
+      var temp = JSON.parse(data.toString('utf-8'));
+      dl.$.mlogs.set('data',temp);
+      dl.missingLogsCount = -1 * temp.length;
+      //   dl.$.logsmlogs=JSON.parse(data.toString('utf-8');
+      //   ml.set('data',mlogs));
+      //console.log(data);
+      self.dataStreamed = '';
     });
 
 }
@@ -85,11 +92,11 @@ DriversApi.prototype.editDriver = function(id, data) {
   this.dataStreamed = '';
   var arr = [];
   arr.push(data);
-  // console.log(JSON.stringify(arr));
+  console.log(JSON.stringify(arr));
   if (util.isArray(arr)) {
-    // console.log('in edit');
-    var args = this.dbPath + 'editDrivers~' + id + '~' +  JSON.stringify(arr) + '\n';
-    // console.log(args);
+    console.log('in edit');
+    var args = this.dbPath + 'editDriver~' + id + '~' +  JSON.stringify(arr) + '\n';
+    console.log(args);
     apiExe.stdin.write(args);
 
     // apiExe.stdin.write('c:/tdsm_w/dbf/driver.dbf~editDrivers~0324~[{"firstName":"pokou"}]\n');
