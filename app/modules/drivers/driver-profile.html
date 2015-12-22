@@ -259,25 +259,11 @@
 
                             <paper-badge label="{{missingLogsCount}}" on-click="viewMissingLogs"></paper-badge>
                         </div>
-                        <div class="layout horizontal center ">
-                            <!--   <div class="rating"></div>
-                      <span class="flex"></span> -->
-                            <!--   <div class="missingsLog">20.5</div> -->
-                            <iron-icon icon="mdi:star"></iron-icon>
-                                <iron-icon icon="mdi:star"></iron-icon>
-                                    <iron-icon icon="mdi:star"></iron-icon>
-                                        <iron-icon icon="mdi:star"></iron-icon>
-                                            <iron-icon icon="mdi:star"></iron-icon>
-                                            <!-- <iron-icon icon="mdi:star"></iron-icon>
-                                              <star-rating showtotals="true" stars="5" rate="3" class="rating" icon="mdi:star" ></star-rating> -->
-                        </div>
+                        <p-rating rate="{{_computeRating(driverData.Hrs_pct)}}"></p-rating>
+                    
+
                     </div>
-                    <!-- class="vertical flex-2 center" style="border:1px solid white;height:100%" -->
-                    <!--  <div dashInfo>
-                        <div class="layout horizontal center flex"><span> LTD Miles :15/15/12</span></div>
-                        <div class="layout horizontal center flex"> <span> Reset Date :15/15/12</span></div>
-                        <div class="layout horizontal center flex"><span> SR Miles  :13213</span></div>
-                    </div> -->
+
                 </div>
                 <div info>
                     <div class="layout center horizontal">
@@ -290,10 +276,10 @@
                             <paper-icon-item>
                                 <iron-icon icon="communication:email"> </iron-icon> <span>{{driverData.email}}</span>
                             </paper-icon-item> -->
-                        <span hidden$="{{!isEditable}}">{{_computeLanguage(driverData.language)}}</span>
-                        <paper-radio-group selected="English" hidden$="{{isEditable}}">
-                          <paper-radio-button name="English">English</paper-radio-button>
-                          <paper-radio-button name="French">French</paper-radio-button>
+                        <span hidden$="{{!isEditable}}">({{_computeLanguage(driverData.language)}})</span>
+                        <paper-radio-group selected="{{driverData.language}}" attr-for-selected="index" hidden$="{{isEditable}}">
+                          <paper-radio-button name="English" index="1">English</paper-radio-button>
+                          <paper-radio-button name="French" index="2">French</paper-radio-button>
                         </paper-radio-group>
                         </div>
                         <div class="layout vertical center flex-1">
@@ -455,7 +441,9 @@
                                 <div secondary></div>
                             </paper-item-body>
                             <paper-input label="Date of Employment" type="text" hidden$="{{isEditable}}"></paper-input>
+
                         </paper-item>
+
                         <paper-item>
                             <paper-item-body two-line hidden$="{{!isEditable}}">
                                 <div class="header">Terminal</div>
@@ -618,6 +606,9 @@
                         }*/
 
          },
+         _computeRating:function (val) {
+             return Math.round(parseInt(val));
+         },
          viewMissingLogs :function () {
             this.$.mlogs.show();
             this.missingLogsCount=this.$.mlogs.data.length * (-1);
@@ -629,10 +620,10 @@
         },
         _computeLanguage: function (lan) {
             if(lan==='2'){
-                return '(French)';
+                return 'French';
             }
             else{
-                return '(English)'
+                return 'English'
             }
         },
 
@@ -651,12 +642,13 @@
 
         },
         _save :function(){
+
                 DriversApi.editDriver(this.driverData.driverId, this.driverData);
                 this.isEditable=!this.isEditable;
                 var l= document.querySelector('drivers-list');
                 var c= document.getElementById(this.driverData.driverId);
-                 c.set('cardData',[]);
-                 c.set('cardData',this.driverData);
+                c.set('cardData',[]);
+                c.set('cardData',this.driverData);
                 document.querySelector('#toastUpdated').open();
 
 
@@ -664,6 +656,7 @@
         ready: function() {
             //   console.log(this.sharedElements.card);
         //      DriversApi.getMissingLogs(this.driverData.driverId);
+
             this.isEditable=true;
 
         },

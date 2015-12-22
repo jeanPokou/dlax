@@ -23,7 +23,7 @@ function  DriversApi() {
     if (trailingNewline(data.toString('utf-8'))) {
       var header = self.dataStreamed.split('~')[0];
       var response = self.dataStreamed.split('~')[1];
-       console.log(response);
+      //    console.log(response);
       if (header === 'getDrivers') {
         self.emit('driversLoaded',response);
       }
