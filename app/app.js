@@ -1,23 +1,31 @@
+// var DriversApi = require('./api/Drivers');
+//
+// // var ipc = require('ipc');
+//
+// // var settingsWindow;
+// //loading the drives list
+// window.addEventListener('WebComponentsReady', function() {
+//
+//   DriversApi.loadDrivers(DriversApi.dbPath);
+//   // var app = document.querySelector('#neonApp');
+//
+// });
+
+  'use strict';
 var DriversApi = require('./api/Drivers');
-
-// var ipc = require('ipc');
-
-// var settingsWindow;
-//loading the drives list
 window.addEventListener('WebComponentsReady', function() {
 
   DriversApi.loadDrivers(DriversApi.dbPath);
-  // var app = document.querySelector('#neonApp');
 
 });
- // var app = document.querySelector('#app');
- //    app.selected = 0;
- //    app.next = function() {
- //        app.selected = 0;
- //
- //    };
 
-// // document.getElementById('platform-info').innerHTML = os.platform();
+// var app = document.querySelector('#app');
+//    app.selected = 0;
+//    app.next = function() {
+//        app.selected = 0;
+//
+//    };
+
 // // document.getElementById('env-name').innerHTML = envName;
 // // -----------------------------------------------------
 // // Here is the starting point for your own code.
@@ -25,7 +33,7 @@ window.addEventListener('WebComponentsReady', function() {
 // // -----------------------------------------------------
 //
 // //Browser modules are imported through new ES6 syntax.
-// import { greet } from './hello_world/hello_world';
+import { greet } from './hello_world/hello_world';
 // // document.getElementById('greet').innerHTML = greet();
 // // // Node modules are required the same way as always.
 // // var os = require('os');

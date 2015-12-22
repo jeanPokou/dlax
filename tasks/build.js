@@ -3,7 +3,6 @@
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 var less = require('gulp-less');
-var esperanto = require('esperanto');
 var map = require('vinyl-map');
 var jetpack = require('fs-jetpack');
 var utils = require('./utils');
@@ -20,6 +19,7 @@ var destDir = projectDir.cwd('./build');
 
 var paths = {
   jsCodeToTranspile: [
+    //   'app/index.html',
       'app/**/*.js',
       '!app/main.js',
       '!app/spec.js',
@@ -30,37 +30,52 @@ var paths = {
   toCopy: [
         'app/main.js',
         'app/spec.js',
-        'app/node_modules/**',
-        'app/api/**',
-        'app/bower_components/**',
-        'app/vendor/**',
-        '*.html',
-      '*.jpg'
+        'app/node_modules/**/*',
+        'app/api/*',
+        '!app/bower_components/**',
+        'app/vendor/*'
+        // '*.html',
+        // '*.jpg'
   ],
   toPolyBuild: [
 
       'app/index.html',
 
-  ]
+  ],
+  build: 'build'
 };
 
 // -------------------------------------
 // Tasks
 // -------------------------------------
 
-// deleting all files in destDir
-gulp.task('clean', function(callback) {
-  return destDir.dirAsync('.', {
-    empty: true
-  });
+// function for removingfiles in a specific folder`
+var clean = function(path) {
+  log('Removing All files in ' + path);
+  return del(path);
+};
+// Tasks for removing all files in the build folder
+gulp.task('clean-build', function(cb) {
+  return clean([paths.build],cb);
 });
 
-// Copying everything from projectDir to destDir
-var copyTask = function() {
-  return projectDir.copyAsync('app', destDir.path(), {
-    overwrite: true,
-    matching: paths.toCopy
-  });
+// function for copying all the files to build folder
+gulp.task('copy',  function() {
+  log('Copying files to ' + paths.build);
+  return gulp.src(paths.toCopy)
+  .pipe(gulp.dest(paths.build));
+});
+
+// customized log function
+
+var log = function(msg) {
+  if (typeof(msg) === 'object') {
+    for (var item in msg) {
+      $.util.log($.util.colors.blue(msg[item]));
+    }
+  } else {
+    $.util.log($.util.colors.blue(msg));
+  }
 };
 
 //rename index.build.html to index.html
@@ -82,10 +97,8 @@ gulp.task('polybuild',function() {
   return polymerBuild(paths.toPolyBuild,'ptest/');
 });
 
-// copy after cleaning folder
-gulp.task('copy',  copyTask);
 //copy i.e overwrite if conflict
-gulp.task('copy-watch', copyTask);
+// gulp.task('copy-watch', copyTask);
 
 // function for transpilying all files i.e converting *js files to es6
 var transpileTask = function() {
@@ -95,7 +108,7 @@ var transpileTask = function() {
         .pipe($.if('*.js', $.babel({presets: ['es2015']})))
         .pipe($.sourcemaps.write('.'))
         .pipe(gulp.dest('.sourcemaps'))
-        .pipe(gulp.dest(destDir.path()));
+        .pipe(gulp.dest(paths.dist));
 };
 // transpile task
 gulp.task('transpile',  transpileTask);
@@ -143,6 +156,6 @@ gulp.task('watch', function() {
   gulp.watch('*.less', ['less-watch']);
 });
 
-gulp.task('build' ,['clean'],function(cb) {
-  runSequence('copy', 'transpile', 'finalize',cb);
+gulp.task('build',['clean'] ,function(cb) {
+  runSequence('copy', ['transpile'], 'finalize',cb);
 });
