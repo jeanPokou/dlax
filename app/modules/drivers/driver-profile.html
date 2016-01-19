@@ -257,10 +257,10 @@
                        </div>
                      </div>
 
-                            <paper-badge label="{{missingLogsCount}}" on-click="viewMissingLogs"></paper-badge>
+                            <paper-badge label="- {{driverData.missingLogs.length}}" on-click="viewMissingLogs"></paper-badge>
                         </div>
                         <p-rating rate="{{_computeRating(driverData.Hrs_pct)}}"></p-rating>
-                    
+
 
                     </div>
 
@@ -355,9 +355,9 @@
                         <paper-item>
                             <paper-item-body two-line  hidden$="{{!isEditable}}">
                                 <div class="header">Date Of Birth</div>
-                                <div secondary>{{_computeDate(driverData.dob)}}</div>
+                                <div secondary><span>{{driverData.dob}}</span></div>
                             </paper-item-body>
-                            <paper-input   label="Date of Birth" hidden$="{{isEditable}}" value={{_computeDate(driverData.dob)}}></paper-input>
+                            <paper-input   label="Date of Birth" hidden$="{{isEditable}}" value="{{driverData.dob}}"></paper-input>
                         </paper-item>
                         <paper-item>
                             <paper-item-body two-line  hidden$="{{!isEditable}}">
@@ -438,9 +438,9 @@
                         <paper-item>
                             <paper-item-body two-line hidden$="{{!isEditable}}">
                                 <div class="header">Date of Employment</div>
-                                <div secondary></div>
+                                <div secondary>{{driverData.Date_emp}}</div>
                             </paper-item-body>
-                            <paper-input label="Date of Employment" type="text" hidden$="{{isEditable}}"></paper-input>
+                            <paper-input label="Date of Employment" type="text" hidden$="{{isEditable}}" value="{{driverData.Date_emp}}"></paper-input>
 
                         </paper-item>
 
@@ -461,7 +461,7 @@
                         <paper-item>
                             <paper-item-body two-line hidden$="{{!isEditable}}">
                                 <div class="header">Email</div>
-                                <div secondary></div>
+                                <div secondary>{{driverData.Email}}</div>
                             </paper-item-body>
                             <paper-input label="Email" hidden$="{{isEditable}}"></paper-input>
                         </paper-item>
@@ -472,14 +472,15 @@
                             <paper-checkbox style=" margin-bottom:10px;margin-left:10px;"  disabled$="{{isEditable}}" checked>Agricultural Certified</paper-checkbox>
                             <paper-item>
                                 <paper-item-body two-line  hidden$="{{!isEditable}}">
-                                    <div class="header">Type</div>
-                                    <div secondary></div>
+                                    <div class="header">Driver type</div>
+                                    <div secondary>{{driverData.Drvtype}}</div>
                                 </paper-item-body>
 
-                              <paper-dropdown-menu class="nounderline" label="Type" vertical-align="bottom" hidden$="{{isEditable}}" >
+                              <paper-dropdown-menu class="nounderline" label="Driver Type" vertical-align="bottom" hidden$="{{isEditable}}"
+                              selected-item-label="{{driverData.Drvtype}}" >
                                 <paper-menu class="dropdown-content">
                                   <template is="dom-repeat" items="[[typeDriver]]" >
-                                    <paper-item>[[item]]</paper-item>
+                                    <paper-item>{{item}}</paper-item>
                                   </template>
                               </paper-menu>
                                 </paper-dropdown-menu>
@@ -490,13 +491,13 @@
                                 <paper-item>
                                     <paper-item-body two-line hidden$="{{!isEditable}}">
                                         <div class="header"> Emmergency Contact</div>
-                                        <div secondary>{{driverData.Phone1}}</div>
+                                        <div secondary>{{driverData.Emg_cntc}}</div>
                                     </paper-item-body>
-                                        <paper-input label="Emmergency Contact" type="text" hidden$="{{isEditable}}"></paper-input>
+                                        <paper-input label="Emmergency Contact" type="text" hidden$="{{isEditable}}" value="{{driverData.Emg_cntc}}"></paper-input>
                                 </paper-item>
                             <paper-item>
                                 <paper-item-body two-line hidden$="{{!isEditable}}">
-                                    <div class="header">Emmergency Phone</div>
+                                    <div class="header">Phone</div>
                                     <div secondary>{{driverData.Phone1}}</div>
                                 </paper-item-body>
                                 <paper-input label="Emmergency Phone" type="text" hidden$="{{isEditable}}"></paper-input>
@@ -553,12 +554,6 @@
 
 
           },
-          missingLogsCount:{
-              type:Number,
-              value:function () {
-                  return 0;
-              }
-          },
            country:{
                type: String,
                notify: true,
@@ -611,7 +606,8 @@
          },
          viewMissingLogs :function () {
             this.$.mlogs.show();
-            this.missingLogsCount=this.$.mlogs.data.length * (-1);
+            this.$.mlogs.data = this.driverData.missingLogs;
+
 
          },
         _computeDate:function (date) {
@@ -643,13 +639,13 @@
         },
         _save :function(){
 
-                DriversApi.editDriver(this.driverData.driverId, this.driverData);
+                Api.editDriver(this.driverData.driverId, this.driverData);
                 this.isEditable=!this.isEditable;
                 var l= document.querySelector('drivers-list');
                 var c= document.getElementById(this.driverData.driverId);
                 c.set('cardData',[]);
                 c.set('cardData',this.driverData);
-                document.querySelector('#toastUpdated').open();
+
 
 
         },

@@ -2,27 +2,36 @@
     <template>
         <style>
         :host {
-            display: block;
+
+            /*height:800px;*/
             /*background: url('https://lh5.googleusercontent.com/-Why0w-QFK24/VMSgIzYFnSI/AAAAAAAADxI/mlrgF1Njfg8/w1312-h738/14-88.png');*/
-            width: 100%;
-            height: 100%;
+            /*width: 100%;
+            height: 100%;*/
             @apply(--layout-vertical);
+            height: 100%;
+            --paper-checkbox-checked-color:#B8E6E3;
+            /*background: url('http://wallpaperspal.com/wp-content/uploads/Blue-Color-Scheme-Material-Design-Wallpaper.jpg');*/
         }
 
         [main] {
             @apply(--layout-vertical);
             @apply(--layout-center-center);
-            background: url('http://wallpaperspal.com/wp-content/uploads/Blue-Color-Scheme-Material-Design-Wallpaper.jpg');
+            margin-top: 5%;
+
         }
 
         paper-material {
             @apply(--layout-vertical);
-            margin: 200px auto;
+            /*margin: 200px auto;*/
             @apply(--layout-center-center);
             min-width: 320px;
-            height: 400px;
+            height: 580px;
             @apply(--shadow-elevation-5dp);
             background-color: white;
+                border-top-left-radius: 15px;
+                border-top-right-radius: 15px;
+                border-bottom-left-radius: 15px;
+                border-bottom-right-radius: 15px;
         }
 
         paper-button {
@@ -32,13 +41,18 @@
             top: 50px;
             min-width: 230px;
             height: 40px;
-            --paper-button-ink-color: green;
+
         }
 
         paper-input {
             min-width: 230px;
             color: gray;
             font-size: 0.6em;
+        }
+        paper-checkbox{
+                min-width: 230px;
+                color: gray;
+                margin-top: 15px;
         }
 
         paper-input label {
@@ -49,36 +63,85 @@
             @apply(--layout-horizontal);
             /* margin-left: 70%; */
         }
+        [message]{
+            position: relative;
+            @apply(--shadow-elevation-2dp);
+                @apply(--layout-vertical);
+                @apply(--layout-center-center);
+            background-color:#D32F2F;
+            width:100%;
+            height: 50px;
+            top:70px;
+            color:white;
+        }
 
         [credentials] {
             @apply(--layout-vertical);
             @apply(--layout-center-center);
         }
+        paper-icon-button{
+            position: relative;
+            top:-10%;
+            right: -40%;
+        }
+
         </style>
         <div main>
+
             <paper-material elevation="3" class="login">
+            <paper-input id="dbInput" label="DBF PATH" value="{{dbPath}}" hidden$="{{settingView}}" error-message="Wrong Path!" ></paper-input>
+            <paper-icon-button icon="settings" on-click="setPath"></paper-icon-button>
+                <h2 class="title">TDSM DLAX </h2>
                 <div credentials>
-                    <paper-input class="short" label="Email" error-message="Invalid Login" autovalidate require label="email">
+                    <paper-input class="short" label="Username" label="Username" value="{{username}}">
                         <iron-icon icon="perm-identity" prefix></iron-icon>
                         <!--     <paper-icon-button suffix onclick="clearInput()" icon="clear" alt="clear" title="clear" tabindex="0">
                     </paper-icon-button> -->
                     </paper-input>
-                    <paper-input type="password" label="Password" error-message="Invalid Password" autovalidate require label="email">
+                    <paper-input  type="password" label="Password" error-message="Invalid Password" value="{{password}}" label="email">
                         <iron-icon icon="lock-outline" prefix></iron-icon>
                         <!--     <paper-icon-button suffix onclick="clearInput()" icon="clear" alt="clear" title="clear" tabindex="0">
                     </paper-icon-button> -->
                     </paper-input>
+
                 </div>
+                    <paper-checkbox checked>Remind me</paper-checkbox>
                 <div action>
-                    <paper-button raised id="loginButton"> Login </paper-button>
+                    <paper-button raised id="loginButton" on-click="login"> Login </paper-button>
                 </div>
+                <div message hidden$="{{_isAccessGranted(message)}}">
+                 <span>{{message}}</span>
+                 </div>
             </paper-material>
+
         </div>
+
     </template>
     <script>
     Polymer({
         is: 'dlax-login',
         properties: {
+            username:{
+                type:String,
+                value:'1464-tmiller'
+            },
+            password:{
+                type:String,
+                value:'dvaV4R3'
+            },
+            message:{
+            type:String,
+            value:'ACCESS GRANTED'
+            },
+            dbPath:{
+                type:String,
+                value:"t:\\tdsm_Wdistech\\dbf\\"
+            },
+            settingView:{
+                type:Boolean,
+                value:true
+            },
+
             animationConfig: {
                 value: function() {
                     return {
@@ -120,6 +183,28 @@
                     };
                 }
             }
+        },
+        login:function () {
+            if(Api.checkDBPath(this.dbPath)){
+
+                    this.$.dbInput.pattern='*';
+                    this.$.dbInput.validate();
+
+                    Api._dbPath=this.dbPath;
+                    console.log(Api._dbPath);
+                    Api.checkLogin(this.username,this.password);
+                    console.log('Valid Path');
+            }else{
+                    this.$.dbInput.pattern='[0-9]*';
+                    this.$.dbInput.validate();
+            }
+
+        },
+        _isAccessGranted:function (message) {
+                return message === "ACCESS GRANTED";
+        },
+        setPath:function () {
+            this.settingView=!this.settingView;
         },
         behaviors: [Polymer.NeonSharedElementAnimatableBehavior]
     });

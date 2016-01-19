@@ -8,7 +8,11 @@ var jetpack = require('fs-jetpack');
 var utils = require('./utils');
 var polybuild = require('polybuild');
 var runSequence = require('run-sequence');
+var buffer = require('vinyl-buffer');
+var source = require('vinyl-source-stream');
+var browserify = require('browserify');
 var del = require('del');
+var transfrom = require('vinyl-transform');
 
 // var babel = require('gulp-babel');
 // var crisper = require('gulp-crisper');
@@ -19,7 +23,7 @@ var destDir = projectDir.cwd('./build');
 
 var paths = {
   jsCodeToTranspile: [
-    //   'app/index.html',
+      'app/*.html',
       'app/**/*.js',
       '!app/main.js',
       '!app/spec.js',
@@ -31,9 +35,10 @@ var paths = {
         'app/main.js',
         'app/spec.js',
         'app/node_modules/**/*',
-        'app/api/*',
-        '!app/bower_components/**',
-        'app/vendor/*'
+        'app/api/**/*',
+        'app/bower_components/**/*',
+        'app/vendor/**/*',
+        'app/modules/**/*'
         // '*.html',
         // '*.jpg'
   ],
@@ -42,6 +47,7 @@ var paths = {
       'app/index.html',
 
   ],
+  toBrowserify: 'app/api/**/*.js',
   build: 'build'
 };
 
@@ -52,18 +58,39 @@ var paths = {
 // function for removingfiles in a specific folder`
 var clean = function(path) {
   log('Removing All files in ' + path);
-  return del(path);
+  return del.sync([path,!path]);
 };
 // Tasks for removing all files in the build folder
-gulp.task('clean-build', function(cb) {
-  return clean([paths.build],cb);
+gulp.task('clean', function(cb) {
+  return del(['build/**','!build'],cb);
 });
 
 // function for copying all the files to build folder
 gulp.task('copy',  function() {
   log('Copying files to ' + paths.build);
-  return gulp.src(paths.toCopy)
+  return gulp.src(paths.toCopy,{
+    base: 'app'
+  })
   .pipe(gulp.dest(paths.build));
+});
+
+// task for Browserify node and npm  modules
+
+gulp.task('js',function() {
+  var b = browserify({
+    entries: 'app/app.js',
+    debug: true
+  });
+
+  return b.bundle()
+    .pipe(source('app/app.js'))
+    .pipe(buffer())
+    .pipe($.sourcemaps.init({loadMaps: true}))
+        // Add transformation tasks to the pipeline here.
+        // .pipe($.uglify())
+        // .on('error', $.log)
+    .pipe($.sourcemaps.write('./tmp'))
+    .pipe(gulp.dest('./build/'));
 });
 
 // customized log function
@@ -102,13 +129,13 @@ gulp.task('polybuild',function() {
 
 // function for transpilying all files i.e converting *js files to es6
 var transpileTask = function() {
-  return gulp.src(paths.jsCodeToTranspile)
+  return gulp.src(paths.jsCodeToTranspile,{base: 'app'})
         .pipe($.sourcemaps.init())
         .pipe($.if('*.html',$.crisper()))
         .pipe($.if('*.js', $.babel({presets: ['es2015']})))
         .pipe($.sourcemaps.write('.'))
         .pipe(gulp.dest('.sourcemaps'))
-        .pipe(gulp.dest(paths.dist));
+        .pipe(gulp.dest(paths.build));
 };
 // transpile task
 gulp.task('transpile',  transpileTask);
@@ -156,6 +183,9 @@ gulp.task('watch', function() {
   gulp.watch('*.less', ['less-watch']);
 });
 
-gulp.task('build',['clean'] ,function(cb) {
-  runSequence('copy', ['transpile'], 'finalize',cb);
+gulp.task('build' ,function(cb) {
+  runSequence('clean','copy',['transpile', 'finalize'],cb);
+});
+gulp.task('build-serve' ,function(cb) {
+  runSequence('clean','copy',['transpile', 'finalize'],'serve',cb);
 });

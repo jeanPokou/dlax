@@ -40,8 +40,15 @@
             /*width: 100%;*/
             padding: 0px 3px;
             margin: 3px;
-            height: auto;
+            min-height: auto;
             /*  border: 1px solid red;*/
+        }
+         .spinner{
+            font-size: 3em;
+            @apply(--layout-vertical);
+            @apply(--layout-center-center);
+            width: 100%;
+
         }
 
         paper-toolbar breadcumb {
@@ -150,7 +157,7 @@
         <div main id="listDrivers">
 
             <div class="numberOfRecords">
-            <iron-icon icon="mdi:view-grid"></iron-icon> <span class="title">Drivers list</span>
+            <iron-icon icon="mdi:view-grid"></iron-icon> <span class="title">Driver's List</span>
             <!-- <i>List Drivers Informations</i> -->
             </div>
             <paper-toolbar>
@@ -160,7 +167,7 @@
                 <paper-dropdown-menu label='By' selected-item-label="{{resultBy}}">
                     <paper-menu class="dropdown-content" selected='0'>
 
-                        <paper-item>First Name</paper-item>
+                        <paper-item>Last Name</paper-item>
                         <paper-item>ID</paper-item>
                     </paper-menu>
                 </paper-dropdown-menu>
@@ -174,7 +181,11 @@
             <div class="numberOfRecords" hidden$="true">
                 <iron-icon icon="mdi:account-multiple"></iron-icon>
                 <span >{{recordFound}}</span><i>Record(s)</i> </div>
+                    <div class="spinner">
+                            <paper-spinner id="listSpinner" alt="Loading drivers list" active></paper-spinner>
+                    </div>
             <div content>
+
                 <!-- horizontal center layout https://api.myjson.com/bins/3c806-->
                 <!-- <iron-ajax auto url="../../drivers.json" handle-as="json" last-response="{{driversData}}" on-response="_handleResponse"></iron-ajax> -->
                 <div class="layout horizontal center wrap flex ">
@@ -374,9 +385,9 @@
         for (i = 0; i < this.driversData.length; i++) {
             id = this.driversData[i].driverId;
 
-            if(this.resultBy === 'First Name'){
+            if(this.resultBy === 'Last Name'){
 
-                if (this.driversData[i].firstName.indexOf(this.search.toUpperCase()) === -1) {
+                if (this.driversData[i].lName.indexOf(this.search.toUpperCase()) === -1) {
 
 
                             document.getElementById(id).style.display = 'none';
@@ -417,11 +428,11 @@
 
         },
 
-        byFirstName: function(a, b) {
-            if (a.firstName < b.firstName) {
+        byLastName: function(a, b) {
+            if (a.lName < b.lName) {
                 return -1;
             }
-            if (a.firstName > b.firstName) {
+            if (a.lName > b.lName) {
                 return 1;
             }
             return 0;
@@ -448,27 +459,9 @@
 
         _view: function(e) {
 
-            /*   this.sharedElements = {
-                   'card': this.$.listDrivers
-               };
-               console.log(this.sharedElements.card);*/
-            // // toggleSelection
-
-            // var item = this.$.driversList.itemForElement(e.target);
-            // this.set('selectedDriver', e.model.item);
-
-             this.selectedIndex = this.driversData.indexOf(e.model.item);
-             console.log(this.selectedIndex);
-             var neonAP=Polymer.dom(this).parentNode
+             Api.getDriver(e.model.item.driverId);
+             var neonAP = Polymer.dom(this).parentNode
             neonAP.selected = 'driverProfile';
-            DriversApi.getMissingLogs(e.model.item.driverId);
-
-            // console.log(neonAP);
-            // var driverProfile =document.querySelector('#driverProfile');
-            // driverProfile.missingLogsCount=2;
-            // console.log(driverProfile.$.mlogs);
-            //$.mlogs.data.length * (-1);
-            // console.log(e.model.item.driverId);
 
 
         },
@@ -480,11 +473,7 @@
             //  this.$.searchBar.style.display = 'none';
 
             this.sortApha = false;
-            // this.recordFound=0;
-
-
-
-        },
+    },
         /*,
                 bahaviors: [Polymer.NeonSharedElementAnimatableBehavior]*/
 
@@ -494,10 +483,10 @@
             this.driversData.sort(function(a, b) {
 
 
-                if (a.firstName < b.firstName) {
+                if (a.lName < b.lName) {
                     return -1;
                 }
-                if (a.firstName > b.firstName) {
+                if (a.lName > b.lName) {
                     return 1;
                 }
                 return 0;
@@ -509,13 +498,13 @@
 
 
                 var items = {};
-                var firstLetter = this.driversData[i].firstName.substring(0, 1).toUpperCase();
+                var firstLetter = this.driversData[i].lName.substring(0, 1).toUpperCase();
                 if (letters.indexOf(firstLetter) === -1) {
 
                     items.firstLetter = firstLetter;
                     items.drivers = [];
                     for (var j = 0; j < this.driversData.length; j++) {
-                        if (this.driversData[j].firstName.substring(0, 1).toUpperCase() === firstLetter) {
+                        if (this.driversData[j].lName.substring(0, 1).toUpperCase() === firstLetter) {
                             items.drivers.push(this.driversData[j]);
                         }
                     }
@@ -526,8 +515,8 @@
 
 
             }
-            // this.set('driversData',this.orderDrivers);
-            // this.recordFound = 0;
+
+
             this.recordFound = this.driversData.length - this.recordFound;
         }
 

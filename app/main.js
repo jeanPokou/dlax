@@ -16,7 +16,7 @@ var mainWindowState = windowStateKeeper('main', {
 
 function createSettings() {
   settingsWindow = new BrowserWindow({
-        width: 640,
+        width: 150,
         height: 280,
         show: false
 
@@ -29,7 +29,7 @@ function createSettings() {
     console.log('hello');
   });
   // settingsWindow.openDevTools();
-  // settingsWindow.show();
+  //settingsWindow.show();
 
 }
 

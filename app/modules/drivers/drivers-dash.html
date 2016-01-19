@@ -6,7 +6,7 @@
         @apply(--paper-font-body2); */
             margin-top: 50px;
             margin-right: 10px;
-            p
+
         }
 
         [main] {
@@ -16,6 +16,7 @@
             /*     border: 1px solid green;*/
             margin: 15px;
             background: var(--paper-grey-180);
+
         }
 
         [card] {
@@ -25,6 +26,7 @@
             margin: 10px;
             color: white;
             min-height: 150px;
+
 
         }
 
@@ -38,6 +40,7 @@
             /*
 */
             margin: 10px;
+
         }
 
 
@@ -66,7 +69,11 @@
             <div content>
 
 
-                    <dash-card id="list"  header="LIST" icon="mdi:social:people"  on-click="showList"></dash-card>
+                    <dash-card id="list"  header="DRIVERS" icon="mdi:social:people"  on-click="showList">
+                        <div class="content layout center vertical">
+                            
+                        </div>
+                    </dash-card>
                     <dash-card class="logs" header="LOGS" icon="mdi:file-chart"></dash-card>
                     <dash-card class="eobr" header="EOBR" icon="mdi:car-connected"></dash-card>
                     <dash-card class="documents" header="DOCUMENTS" icon="mdi:file-document"></dash-card>
@@ -89,11 +96,12 @@
         },
 
         showList: function() {
+            Api.loadDrivers();
             this.parentNode.selected = 'driversList';
         },
 
         ready:function(){
-        	this.$.list.content='2125 Active Drivers';
+        	//this.$.list.content='2125 Active Drivers';
         }
     });
     </script>

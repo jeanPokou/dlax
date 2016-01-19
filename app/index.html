@@ -5,37 +5,35 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Driver Log Audit X</title>
-    <!--   <link href="./stylesheets/main.css" rel="stylesheet" type="text/css"> -->
-    <!-- <script src="vendor/electron_boilerplate/env_config.js"></script> -->
-       <script src="vendor/electron_boilerplate/context_menu.js"></script>
-    <script src="vendor/electron_boilerplate/external_links.js"></script>
+    <!-- <script src="vendor/electron_boilerplate/context_menu.js"></script>
+    <script src="vendor/electron_boilerplate/external_links.js"></script> -->
     <script src="vendor/require.js"></script>
     <script>
-    requirejs(['app'], function(app) {});
+     requirejs(['app'], function(app) {});
     </script>
-
     <script src="bower_components/webcomponentsjs/webcomponents-lite.js">
     </script>
     <link rel="import" href="elements.html">
+    <style>
+        body {
+
+
+        },
+        html,
+        body {
+            height:100%;
+        }
+
+
+    </style>
 </head>
-
+<!--   fullbleed-->
 <body>
-    <!--  <div class="container">
-        <h1 id="greet"></h1>
-        <p class="subtitle">
-            Welcome to <a href="http://electron.atom.io" class="js-external-link">Electron</a> app running on this magnificent <strong id="platform-info"></strong> machine.
-        </p>
-        <p class="subtitle">
-            You are in <strong id="env-name"></strong> environment.
-            <paper-button raised>Hello </paper-button>
-        </p>
-    </div> -->
-<!-- <dlax-app></dlax-app> -->
-    <!-- <h1 id="greet"></h1> -->
+<neon-animated-pages selected="0" id="app" >
+    <dlax-login></dlax-login>
+     <dlax-app></dlax-app>
+</neon-animated-pages>
 
-    <template is="dom-bind" id="app">
-    <dlax-app></dlax-app>
-    </template>
 
 </body>
 

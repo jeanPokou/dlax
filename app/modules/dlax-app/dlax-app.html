@@ -2,16 +2,24 @@
     <template>
         <style>
         :host {
-            display: flex;
+            display:flex;
+            width:100%;
+
+
         }
 
-        .container {
+        /*.container {
             display: -webkit-flex;
+        }*/
+        paper-drawer-panel{
+            height: auto;
+            min-height:800px;
         }
 
         .flexchild {
             display: --layout-flex-3;
         }
+
 
         .userAvatar {
             position: relative;
@@ -104,7 +112,7 @@
                     </div>
                 </paper-toolbar>
 
-                <div>
+                <div class="contentt">
                     <neon-animated-pages class="flex" attr-for-selected="data-route" selected="{{route}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
                         <drivers-x data-route="drivers" id="drivers"></drivers-x>
                         <dla-x header="DASHBOARD" data-route="home"></dla-x>

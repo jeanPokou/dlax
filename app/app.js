@@ -10,13 +10,14 @@
 //   // var app = document.querySelector('#neonApp');
 //
 // });
+//
+// (function() {
 
   'use strict';
-var DriversApi = require('./api/Drivers');
+var Api = require('./api/Api');
+//import {DriversApi} from './api/Drivers.js'
 window.addEventListener('WebComponentsReady', function() {
-
-  DriversApi.loadDrivers(DriversApi.dbPath);
-
+  //  DriversApi.loadDrivers(DriversApi.dbPath+'getDrivers');
 });
 
 // var app = document.querySelector('#app');
@@ -33,7 +34,7 @@ window.addEventListener('WebComponentsReady', function() {
 // // -----------------------------------------------------
 //
 // //Browser modules are imported through new ES6 syntax.
-import { greet } from './hello_world/hello_world';
+// import { greet } from './hello_world/hello_world';
 // // document.getElementById('greet').innerHTML = greet();
 // // // Node modules are required the same way as always.
 // // var os = require('os');

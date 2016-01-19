@@ -7,41 +7,34 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
-<script src="..\bower_components\page\page.js"></script>
+<!-- <script src="../bower_components/page/page.js"></script>
 <script>
 window.addEventListener('WebComponentsReady', function() {
-
     // We use Page.js for routing. This is a Micro
     // client-side router inspired by the Express router
     // More info: https://visionmedia.github.io/page.js/
-
-    // // // Middleware
-//     var app = document.querySelector('dlax-app');
-//
-//
-//     // Routes
-//     page('/', app.scrollToTop, function() {
-//         app.route = 'home';
-//     });
-//
-//     page('/drivers', app.scrollToTop, function() {
-//         app.route = 'drivers';
-//         console.log('hello');
-//     });
-//
-//     page('/users/:name', app.scrollToTop, function(data) {
-//         app.route = 'user-info';
-//         app.params = data.params;
-//     });
-//
-//     page('/vehicles', app.scrollToTop, function() {
-//         app.route = 'vehicles';
-//     });
-//
-//     // add #! before urls
-//     page({
-//         hashbang: true
-//     });
+    //
+    var dlaxApp = document.querySelector('dlax-app');
+    // // Routes
+    page('/', function() {
+             dlaxApp.route = 'home';
+    });
+    //
+    page('/drivers', function() {
+         dlaxApp.route = 'drivers';
+    });
+    // page('/users/:name', app.scrollToTop, function(data) {
+    //     app.route = 'user-info';
+    //     app.params = data.params;
+    // });
+    //
+    page('/vehicles', function() {
+        dlaxApp.route = 'vehicles';
+    });
+     // add #! before urls
+    page({
+        hashbang: true
+    });
 //
 });
-</script>
+</script> -->
