@@ -51,7 +51,7 @@ app.on('ready', function() {
   });
   createSettings();
 
-  mainWindow.openDevTools();
+  //mainWindow.openDevTools();
 });
 
 app.on('window-all-closed', function() {

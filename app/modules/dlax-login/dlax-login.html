@@ -89,7 +89,7 @@
         <div main>
 
             <paper-material elevation="3" class="login">
-            <paper-input id="dbInput" label="DBF PATH" value="{{dbPath}}" hidden$="{{settingView}}" error-message="Wrong Path!" ></paper-input>
+            <paper-input id="dbInput" label="DBF PATH" value="{{dbPath}}" hidden$="{{settingView}}" error-message="Wrong Path!"  required ></paper-input>
             <paper-icon-button icon="settings" on-click="setPath"></paper-icon-button>
                 <h2 class="title">TDSM DLAX </h2>
                 <div credentials>
@@ -105,7 +105,7 @@
                     </paper-input>
 
                 </div>
-                    <paper-checkbox checked>Remind me</paper-checkbox>
+                    <paper-checkbox checked="{{remember}}">Remember me</paper-checkbox>
                 <div action>
                     <paper-button raised id="loginButton" on-click="login"> Login </paper-button>
                 </div>
@@ -123,11 +123,15 @@
         properties: {
             username:{
                 type:String,
-                value:'1464-tmiller'
+                value:function () {
+                    return window.localStorage.username === null ? '':window.localStorage.username;
+                }
             },
             password:{
                 type:String,
-                value:'dvaV4R3'
+                value:function () {
+                    return window.localStorage.password === null ? '':window.localStorage.password;
+                }
             },
             message:{
             type:String,
@@ -135,11 +139,19 @@
             },
             dbPath:{
                 type:String,
-                value:"t:\\tdsm_Wdistech\\dbf\\"
+                value:function(){
+                    return Api.getConfig('dbPath');
+                }
             },
             settingView:{
                 type:Boolean,
                 value:true
+            },
+            remember:{
+                type:Boolean,
+                value:function () {
+                        return window.localStorage.remember === null ? false:window.localStorage.remember;
+                }
             },
 
             animationConfig: {
@@ -189,14 +201,15 @@
 
                     this.$.dbInput.pattern='*';
                     this.$.dbInput.validate();
-
                     Api._dbPath=this.dbPath;
                     console.log(Api._dbPath);
                     Api.checkLogin(this.username,this.password);
-                    console.log('Valid Path');
+                    console.log('Valid Path');                    
+
             }else{
                     this.$.dbInput.pattern='[0-9]*';
                     this.$.dbInput.validate();
+                        console.log('Invalid  Path');
             }
 
         },

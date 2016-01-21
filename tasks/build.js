@@ -38,9 +38,9 @@ var paths = {
         'app/api/**/*',
         'app/bower_components/**/*',
         'app/vendor/**/*',
-        'app/modules/**/*'
+        'app/modules/**/*',
         // '*.html',
-        // '*.jpg'
+        '*.jpg'
   ],
   toPolyBuild: [
 

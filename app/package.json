@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "async-node-events": "0.0.7",
+    "configstore": "^1.4.0",
     "fs-jetpack": "^0.6.4",
     "trailing-newline": "^1.0.0"
   }

@@ -16,6 +16,12 @@ var events = require('async-node-events');
 var trailingNewline = require('trailing-newline');
 var encoder = require('./encode.js');
 var fs = require('fs');
+var configstore = require('configstore');
+var config = require(__dirname + '/userConfig.js');
+
+var userConfig = new configstore(config.name);
+
+
 
 var apiExe = spawn(__dirname + '/dataLayer/dataRequestModule.exe',
 []);
@@ -39,6 +45,7 @@ function  Api() {
       } catch (e) {
           console.log(self.dataStreamed);
       }
+
       var moduleName = self.dataStreamed.split('~')[0];
       var functionName = self.dataStreamed.split('~')[1];
       var response = self.dataStreamed.split('~')[2];
@@ -52,11 +59,29 @@ function  Api() {
   });
 
 }
+
+Api.prototype.rememberMe = function (remember,username,password) {
+    if(remember){
+    userConfig.set('username',username);
+    userConfig.set('password',password);
+    }
+};
+Api.prototype.getConfig = function (attr) {
+    return  userConfig.get(attr);
+};
 // util.inherits(Api,events);
 Api.prototype.checkDBPath = function(val) {
   try {
     fs.accessSync(val, fs.F_OK);
-    return true;
+    console.log(val + '\carrierInfo.DBF');
+    if(fs.statSync(val + '\carrierInfo.DBF').isFile()){
+        userConfig.set('dbPath',val);
+        return true;
+    }else {
+        return false;
+    }
+
+
   } catch (e) {
       return false;
   }
@@ -89,7 +114,7 @@ Api.prototype.editDriver = function(id, data) {
   var arr = [];
   arr.push(data);
   console.log(data);
-  var args = self._dbPath + 'driver.dbf~Drivers~' + 'editDriver~' + id + '~' +
+  var args = this._dbPath + 'driver.dbf~Drivers~' + 'editDriver~' + id + '~' +
    JSON.stringify(arr);
   this.run(args);
 
